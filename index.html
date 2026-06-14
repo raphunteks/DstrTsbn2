@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daster Tasbon | Premium Home Wear</title>
+    <!-- Favicon -->
     <link rel="icon" href="dtasbon.png">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,8 +28,12 @@
 
     <main>
         <section id="view-home">
-            <div class="category-chips" id="category-container"></div>
-            <div class="product-grid" id="product-grid"></div>
+            <div class="category-chips" id="category-container">
+                <!-- Categories rendered here -->
+            </div>
+            <div class="product-grid" id="product-grid">
+                <!-- Products rendered here -->
+            </div>
         </section>
 
         <section id="view-login" class="hidden" style="display:flex; justify-content:center; align-items:center; min-height:60vh;">
@@ -76,6 +84,7 @@
                                 <option value="">Pilih Produk...</option>
                             </select>
                             <p style="font-size: 12px; margin-top:-10px; margin-bottom:10px; color:var(--text-light)" id="pos-stock-info">Stok: -</p>
+                            
                             <div style="display:flex; gap:10px;">
                                 <input type="number" id="pos-qty" class="input-glass" placeholder="QTY" value="1" min="1" onchange="App.posCalc()">
                                 <input type="text" id="pos-price" class="input-glass" placeholder="Total Harga" readonly style="background: rgba(0,0,0,0.05)">
@@ -92,7 +101,9 @@
                         <div class="table-responsive glass-card" style="margin-top:20px; padding:0;">
                             <table id="catalog-table">
                                 <thead>
-                                    <tr><th>Foto</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr>
+                                    <tr>
+                                        <th>Foto</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th>
+                                    </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -104,7 +115,9 @@
                         <div class="table-responsive glass-card" style="margin-top:20px; padding:0;">
                             <table id="tx-table">
                                 <thead>
-                                    <tr><th>ID Order</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th></tr>
+                                    <tr>
+                                        <th>ID Order</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th>
+                                    </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -131,7 +144,9 @@
 
                     <div id="admin-settings" class="hidden">
                         <h2>Pengaturan Sistem & Payment</h2>
+                        
                         <div class="settings-grid" style="margin-top:20px;">
+                            <!-- QRIS -->
                             <div class="glass-card setting-box">
                                 <label>Link Data QRIS</label>
                                 <input type="text" id="set-qris" class="input-glass" placeholder="https://api.qrserver.com/.../...">
@@ -140,6 +155,7 @@
                                     <input type="file" id="logo-qris" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- BCA -->
                             <div class="glass-card setting-box">
                                 <label>Bank BCA</label>
                                 <input type="text" id="set-bca" class="input-glass" placeholder="BCA 1234567890">
@@ -148,6 +164,7 @@
                                     <input type="file" id="logo-bca" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- BNI -->
                             <div class="glass-card setting-box">
                                 <label>Bank BNI</label>
                                 <input type="text" id="set-bni" class="input-glass" placeholder="BNI 1234567890">
@@ -156,6 +173,7 @@
                                     <input type="file" id="logo-bni" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- DANA -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet DANA</label>
                                 <input type="text" id="set-dana" class="input-glass" placeholder="081xxx (DANA)">
@@ -164,6 +182,7 @@
                                     <input type="file" id="logo-dana" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- OVO -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet OVO</label>
                                 <input type="text" id="set-ovo" class="input-glass" placeholder="081xxx (OVO)">
@@ -172,6 +191,7 @@
                                     <input type="file" id="logo-ovo" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- GOPAY -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet GoPay</label>
                                 <input type="text" id="set-gopay" class="input-glass" placeholder="081xxx (GoPay)">
@@ -180,6 +200,7 @@
                                     <input type="file" id="logo-gopay" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- SHOPEEPAY -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet ShopeePay</label>
                                 <input type="text" id="set-shopeepay" class="input-glass" placeholder="081xxx (ShopeePay)">
@@ -189,14 +210,15 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <button class="btn btn-primary" style="width:100%; margin-top:20px; font-size:16px;" onclick="App.saveSettings()">Upload Logo & Simpan Pengaturan</button>
                     </div>
+
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- UPGRADED MODAL CART (SLIDER & SCROLLABLE DESC) -->
     <div id="modal-cart" class="modal-overlay hidden">
         <div class="modal-content row-modal glass">
             <button class="modal-close" onclick="App.closeModal('modal-cart')">&times;</button>
@@ -428,6 +450,19 @@
                 return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
             },
 
+            // --- FUNGSI BARU: FORMATTING GAMBAR GOOGLE DRIVE AGAR TIDAK BLANK ---
+            formatDriveImage(url) {
+                if (!url) return '';
+                url = url.trim();
+                // Deteksi jika ini adalah link Google Drive
+                const match = url.match(/[-\w]{25,}/); // Mencari ID Google Drive
+                if (url.includes('drive.google.com') && match) {
+                    // Paksa render thumbnail beresolusi 800px agar aman dari blokir CORS
+                    return `https://drive.google.com/thumbnail?id=${match[0]}&sz=w800`;
+                }
+                return url; // Kembalikan url normal jika bukan dari Drive
+            },
+
             async apiCall(payload) {
                 const isDummyURL = API_URL.includes("AKfycbyR6w2G4iR5L12J1F7H2qFhYj92z0V79A_0lA2uXh6kL8pW");
                 if (isDummyURL) return App.mockApi(payload);
@@ -580,19 +615,18 @@
                 grid.innerHTML = filtered.map(p => {
                     let firstImg = 'dtasbon.png';
                     if (p.Image_URLs) {
-                        // Ambil gambar pertama jika ada lebih dari satu (dipisah koma)
                         firstImg = p.Image_URLs.split(',')[0].trim(); 
                     }
+                    // Menerapkan Format Auto-Healing Gambar
                     return `
                     <div class="glass-card product-card" onclick="App.openCart('${p.ID_Product}')">
-                        <img src="${firstImg}" class="product-image" alt="${p.Name}">
+                        <img src="${App.formatDriveImage(firstImg)}" class="product-image" alt="${p.Name}">
                         <h3 class="product-title">${p.Name}</h3>
                         <p class="product-price">${App.formatRp(p.Price)}</p>
                     </div>
                 `}).join('');
             },
 
-            // --- UPGRADED: SLIDER LOGIC ---
             renderSlider() {
                 const imgEl = document.getElementById('cart-img');
                 const dotsEl = document.getElementById('slider-dots');
@@ -603,7 +637,8 @@
                     return;
                 }
 
-                imgEl.src = App.state.sliderImages[App.state.sliderIndex];
+                // Menerapkan Format Auto-Healing Gambar
+                imgEl.src = App.formatDriveImage(App.state.sliderImages[App.state.sliderIndex]);
                 
                 if(App.state.sliderImages.length > 1) {
                     dotsEl.innerHTML = App.state.sliderImages.map((_, i) => 
@@ -632,7 +667,6 @@
                 App.state.cartQty = 1;
                 App.state.uniqueCode = Math.floor(Math.random() * 900) + 100;
                 
-                // Extract Image Array
                 if(product.Image_URLs) {
                     App.state.sliderImages = product.Image_URLs.split(',').map(s => s.trim()).filter(Boolean);
                 } else {
@@ -710,7 +744,8 @@
                 if(!el) return;
                 const logoKey = 'LOGO_' + method;
                 if(App.state.settings[logoKey] && App.state.settings[logoKey].startsWith('http')) {
-                    el.innerHTML = `<img src="${App.state.settings[logoKey]}" class="pay-logo" alt="${method}">`;
+                    // Menerapkan Format Auto-Healing Gambar
+                    el.innerHTML = `<img src="${App.formatDriveImage(App.state.settings[logoKey])}" class="pay-logo" alt="${method}">`;
                 } else {
                     el.innerHTML = defaultHtml;
                 }
@@ -760,10 +795,12 @@
                 
                 if(method === 'QRIS') {
                     const qrData = `QRIS_DASTERTASBON_${App.state.currentOrderTotal}`;
+                    // Menerapkan Format Auto-Healing pada QRIS Utama
+                    const qrisImgSrc = (s.QRIS_LINK && s.QRIS_LINK.startsWith('http')) ? App.formatDriveImage(s.QRIS_LINK) : 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(qrData);
                     inst.innerHTML = `
                         <div class="qr-container">
                             <p style="margin-bottom:10px;">Scan QRIS di bawah ini:</p>
-                            <img src="${s.QRIS_LINK && s.QRIS_LINK.startsWith('http') ? s.QRIS_LINK : 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(qrData)}" alt="QRIS">
+                            <img src="${qrisImgSrc}" alt="QRIS">
                         </div>
                     `;
                 } else if(method === 'BCA') {
@@ -781,7 +818,6 @@
                 }
             },
 
-            // --- UPGRADED: MULTI-IMAGE COMPRESSOR ARRAY ---
             async compressImagesToJSON(fileInputId) {
                 const fileInput = document.getElementById(fileInputId);
                 if (!fileInput || fileInput.files.length === 0) return [];
@@ -824,7 +860,6 @@
 
                 try {
                     App.showLoader(true);
-                    // Process Receipt Image
                     const file = receiptInput.files[0];
                     const mimeType = file.type;
                     const fileName = "Receipt_" + Date.now() + "_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
@@ -876,13 +911,13 @@
                     if(res) {
                         App.closeModal('modal-payment');
                         App.showToast(`Pesanan #${res.orderId} Dibuat! Menunggu Verifikasi Admin.`);
-                        // Fetch latest in background
+                        // Fetch latest in background (Tidak pakai await di sini agar tidak hold UI)
                         App.apiCall({ action: "getTransactions", page: 1, limit: 100 }).then(r => { if(r) App.state.orders = r.data; });
                     }
                 } catch (e) {
                     App.showToast("Gagal memproses transaksi.");
                 } finally {
-                    App.showLoader(false); // Pastikan mati
+                    App.showLoader(false); // Pastikan loader selalu tertutup
                 }
             },
 
@@ -973,9 +1008,10 @@
                 const tbody = document.querySelector('#catalog-table tbody');
                 tbody.innerHTML = App.state.products.map(p => {
                     let thumb = p.Image_URLs ? p.Image_URLs.split(',')[0].trim() : 'dtasbon.png';
+                    // Menerapkan Format Auto-Healing Gambar
                     return `
                     <tr>
-                        <td><img src="${thumb}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;"></td>
+                        <td><img src="${App.formatDriveImage(thumb)}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;"></td>
                         <td>${p.Name}</td>
                         <td>${p.Category}</td>
                         <td>${App.formatRp(p.Price)}</td>
@@ -987,11 +1023,10 @@
                 `}).join('');
             },
 
-            // --- UPGRADED: PREVIEW MULTIPLE IMAGE ---
             previewMultipleImages() {
                 const previewDiv = document.getElementById('multi-preview');
                 const fileInput = document.getElementById('prod-img');
-                previewDiv.innerHTML = ''; // Clear
+                previewDiv.innerHTML = ''; 
                 
                 if (fileInput.files) {
                     Array.from(fileInput.files).forEach(file => {
@@ -1021,7 +1056,7 @@
                 document.getElementById('prod-stock').value = '';
                 document.getElementById('prod-sold').value = '0';
                 document.getElementById('prod-img').value = '';
-                document.getElementById('multi-preview').innerHTML = ''; // reset
+                document.getElementById('multi-preview').innerHTML = ''; 
 
                 if(id) {
                     const p = App.state.products.find(x => x.ID_Product === id);
@@ -1037,10 +1072,10 @@
                         document.getElementById('prod-stock').value = p.Stock;
                         document.getElementById('prod-sold').value = p.Sold || 0;
                         
-                        // Show old image previews
+                        // Show old image previews (Menerapkan Format Auto-Healing Gambar)
                         if(p.Image_URLs) {
                             document.getElementById('multi-preview').innerHTML = p.Image_URLs.split(',').map(url => 
-                                `<img src="${url.trim()}" style="width:60px;height:60px;object-fit:cover;border-radius:5px;opacity:0.6;">`
+                                `<img src="${App.formatDriveImage(url)}" style="width:60px;height:60px;object-fit:cover;border-radius:5px;opacity:0.6;">`
                             ).join('');
                         }
                     }
@@ -1054,7 +1089,6 @@
                 try {
                     App.showLoader(true);
                     
-                    // Compress array of images
                     const imgArray = await App.compressImagesToJSON('prod-img');
 
                     const data = {
@@ -1067,13 +1101,13 @@
                         capital: parseInt(document.getElementById('prod-cogs').value),
                         stock: parseInt(document.getElementById('prod-stock').value),
                         sold: parseInt(document.getElementById('prod-sold').value),
-                        imagesData: imgArray // Send array to Backend
+                        imagesData: imgArray 
                     };
 
                     const res = await App.apiCall({ action: "saveProduct", data: data });
                     
                     if(res) {
-                        // Background update
+                        // Tidak menggunakan await pada fetchData agar UI cepat tertutup
                         App.fetchData();
                         App.closeModal('modal-product');
                         App.showToast("Produk sukses disimpan ke Server!");
@@ -1130,7 +1164,8 @@
                 const noneEl = document.getElementById('ord-receipt-none');
                 
                 if (o.Payment_Receipt && o.Payment_Receipt.startsWith('http')) {
-                    imgEl.src = o.Payment_Receipt;
+                    // Menerapkan Format Auto-Healing Gambar
+                    imgEl.src = App.formatDriveImage(o.Payment_Receipt);
                     imgEl.style.display = 'block';
                     noneEl.style.display = 'none';
                 } else {
@@ -1207,7 +1242,8 @@
                     document.getElementById('logo-' + key).value = ''; 
 
                     if(s[dbKey] && s[dbKey].startsWith('http')) {
-                        imgEl.src = s[dbKey];
+                        // Menerapkan Format Auto-Healing Gambar
+                        imgEl.src = App.formatDriveImage(s[dbKey]);
                         imgEl.classList.remove('hidden');
                     } else {
                         imgEl.classList.add('hidden');
@@ -1219,7 +1255,6 @@
                 try {
                     App.showLoader(true);
                     
-                    // Single file uploads to array extraction
                     const getImg = async (id) => { const a = await App.compressImagesToJSON(id); return a.length > 0 ? a[0] : null; };
 
                     const logoQris = await getImg('logo-qris');
@@ -1251,7 +1286,8 @@
                     const res = await App.apiCall({ action: "updateSettings", data: data });
                     
                     if(res) {
-                        await App.fetchData(); 
+                        // Hindari delay loader dengan tidak pakai await
+                        App.fetchData(); 
                         App.showToast("Pengaturan E-Wallet, Bank, dan Logo Berhasil Disimpan!");
                     }
                 } finally {
