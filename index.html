@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daster Tasbon - Premium Collection</title>
-    <!-- Favicon Dtasbon -->
+    <!-- Favicon -->
     <link rel="icon" href="dtasbon.png" type="image/png">
     <!-- Google Fonts -->
     <link href="[https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
 
     <!-- Global Loading Overlay -->
     <div id="loading-overlay">
@@ -28,7 +31,7 @@
                 <span>Daster Tasbon</span>
             </div>
             <div>
-                <button class="btn btn-outline" id="btn-toggle-admin" onclick="toggleAdminLogin()">Admin</button>
+                <button class="btn btn-outline" id="btn-toggle-admin" onclick="toggleAdminLogin()">Admin ERP</button>
                 <button class="btn btn-outline hidden" id="btn-logout" onclick="logoutAdmin()">Logout</button>
             </div>
         </header>
@@ -50,10 +53,10 @@
         <!-- ADMIN LOGIN VIEW -->
         <main id="login-view" class="hidden" style="max-width: 400px; margin: 50px auto;">
             <div class="glass" style="padding: 30px;">
-                <h2 style="margin-bottom: 20px; text-align: center;">Admin Login</h2>
-                <input type="text" id="admin-user" class="input-glass" placeholder="Username">
-                <input type="password" id="admin-pass" class="input-glass" placeholder="Password">
-                <button class="btn btn-dark" style="width: 100%;" onclick="processLogin()">Login</button>
+                <h2 style="margin-bottom: 20px; text-align: center;">System Login</h2>
+                <input type="text" id="admin-user" class="input-glass" placeholder="Username (dastertasbon)">
+                <input type="password" id="admin-pass" class="input-glass" placeholder="Password (tasbon12)">
+                <button class="btn btn-dark" style="width: 100%;" onclick="processLogin()">Login to ERP</button>
             </div>
         </main>
 
@@ -62,12 +65,12 @@
             <div class="admin-layout">
                 <!-- Sidebar -->
                 <aside class="sidebar glass">
-                    <div class="nav-item active" onclick="switchAdminTab('overview')">Overview</div>
-                    <div class="nav-item" onclick="switchAdminTab('cashier')">Cashier (Offline)</div>
-                    <div class="nav-item" onclick="switchAdminTab('catalog')">Catalog Product</div>
-                    <div class="nav-item" onclick="switchAdminTab('transactions')">History Transaction</div>
-                    <div class="nav-item" onclick="switchAdminTab('finance')">Laporan Keuangan</div>
-                    <div class="nav-item" onclick="switchAdminTab('settings')">Pengaturan</div>
+                    <div class="nav-item active" onclick="switchAdminTab('overview')">📊 Overview</div>
+                    <div class="nav-item" onclick="switchAdminTab('cashier')">🛒 Cashier (POS)</div>
+                    <div class="nav-item" onclick="switchAdminTab('catalog')">📦 Catalog Product</div>
+                    <div class="nav-item" onclick="switchAdminTab('transactions')">🧾 History Orders</div>
+                    <div class="nav-item" onclick="switchAdminTab('finance')">💰 Finance Report</div>
+                    <div class="nav-item" onclick="switchAdminTab('settings')">⚙️ Settings</div>
                 </aside>
 
                 <!-- Content Area -->
@@ -89,9 +92,7 @@
             
             <div class="cart-grid">
                 <!-- Left: Product Info -->
-                <div id="cart-product-details">
-                    <!-- Injected -->
-                </div>
+                <div id="cart-product-details"></div>
 
                 <!-- Right: Form & Summary -->
                 <div>
@@ -156,7 +157,7 @@
                 <p>Pilih metode pembayaran di atas.</p>
             </div>
 
-            <button class="btn btn-dark" style="width: 100%;" id="btn-confirm-order" onclick="confirmCustomerOrder()">Saya Sudah Bayar</button>
+            <button class="btn btn-dark" style="width: 100%;" id="btn-confirm-order" onclick="confirmCustomerOrder()">Konfirmasi Saya Sudah Bayar</button>
         </div>
     </div>
 
@@ -182,12 +183,16 @@
                     <input type="number" id="prod-modal" class="input-glass" placeholder="Modal Per Satuan (Rp)">
                 </div>
                 
-                <input type="number" id="prod-stock" class="input-glass" placeholder="Stock">
+                <input type="number" id="prod-stock" class="input-glass" placeholder="Stock Inventory">
                 
                 <p style="margin-bottom: 5px;">Media Product (Image)</p>
-                <input type="file" id="prod-file" class="input-glass" accept="image/*">
+                <!-- Image Preview -->
+                <div style="margin-bottom: 15px;">
+                    <img id="prod-preview-img" src="" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; display: none; background:#eee;">
+                </div>
+                <input type="file" id="prod-file" class="input-glass" accept="image/*" onchange="previewImage(event)">
                 
-                <button class="btn btn-dark" style="width: 100%; margin-top: 10px;" id="btn-save-product" onclick="saveProduct()">Simpan & Tampilkan</button>
+                <button class="btn btn-dark" style="width: 100%; margin-top: 10px;" id="btn-save-product" onclick="saveProduct()">Simpan Data Produk</button>
             </div>
         </div>
     </div>
@@ -196,15 +201,14 @@
     <div class="modal-overlay" id="modal-order-detail">
         <div class="modal-content" style="max-width: 500px;">
             <button class="close-btn" onclick="closeModal('modal-order-detail')">&times;</button>
-            <h2>Detail Order</h2>
-            <div id="order-detail-content" style="margin: 20px 0; text-align: left; line-height: 1.6;">
+            <h2>Detail Transaksi</h2>
+            <div id="order-detail-content" style="margin: 20px 0; text-align: left; line-height: 1.6; background: rgba(0,0,0,0.02); padding: 20px; border-radius: 12px;">
                 <!-- Injected -->
             </div>
-            <button class="btn btn-dark" style="width: 100%;" id="btn-confirm-trx" onclick="confirmAdminTransaction()">Confirmation Transaction (Set SUCCESS)</button>
+            <button class="btn btn-dark" style="width: 100%;" id="btn-confirm-trx" onclick="confirmAdminTransaction()">✅ Verifikasi & Set SUCCESS</button>
         </div>
     </div>
 
-    <!-- Tautan ke file JavaScript Terpisah -->
     <script src="script.js"></script>
 </body>
 </html>
