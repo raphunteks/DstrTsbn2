@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daster Tasbon | Premium Home Wear</title>
+    <!-- Favicon -->
     <link rel="icon" href="dtasbon.png">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,8 +28,12 @@
 
     <main>
         <section id="view-home">
-            <div class="category-chips" id="category-container"></div>
-            <div class="product-grid" id="product-grid"></div>
+            <div class="category-chips" id="category-container">
+                <!-- Categories rendered here -->
+            </div>
+            <div class="product-grid" id="product-grid">
+                <!-- Products rendered here -->
+            </div>
         </section>
 
         <section id="view-login" class="hidden" style="display:flex; justify-content:center; align-items:center; min-height:60vh;">
@@ -76,6 +84,7 @@
                                 <option value="">Pilih Produk...</option>
                             </select>
                             <p style="font-size: 12px; margin-top:-10px; margin-bottom:10px; color:var(--text-light)" id="pos-stock-info">Stok: -</p>
+                            
                             <div style="display:flex; gap:10px;">
                                 <input type="number" id="pos-qty" class="input-glass" placeholder="QTY" value="1" min="1" onchange="App.posCalc()">
                                 <input type="text" id="pos-price" class="input-glass" placeholder="Total Harga" readonly style="background: rgba(0,0,0,0.05)">
@@ -92,7 +101,9 @@
                         <div class="table-responsive glass-card" style="margin-top:20px; padding:0;">
                             <table id="catalog-table">
                                 <thead>
-                                    <tr><th>Foto</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr>
+                                    <tr>
+                                        <th>Foto</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th>
+                                    </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -104,7 +115,9 @@
                         <div class="table-responsive glass-card" style="margin-top:20px; padding:0;">
                             <table id="tx-table">
                                 <thead>
-                                    <tr><th>ID Order</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th></tr>
+                                    <tr>
+                                        <th>ID Order</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th>
+                                    </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -131,7 +144,9 @@
 
                     <div id="admin-settings" class="hidden">
                         <h2>Pengaturan Sistem & Payment</h2>
+                        
                         <div class="settings-grid" style="margin-top:20px;">
+                            <!-- QRIS -->
                             <div class="glass-card setting-box">
                                 <label>Link Data QRIS</label>
                                 <input type="text" id="set-qris" class="input-glass" placeholder="https://api.qrserver.com/.../...">
@@ -140,6 +155,7 @@
                                     <input type="file" id="logo-qris" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- BCA -->
                             <div class="glass-card setting-box">
                                 <label>Bank BCA</label>
                                 <input type="text" id="set-bca" class="input-glass" placeholder="BCA 1234567890">
@@ -148,6 +164,7 @@
                                     <input type="file" id="logo-bca" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- BNI -->
                             <div class="glass-card setting-box">
                                 <label>Bank BNI</label>
                                 <input type="text" id="set-bni" class="input-glass" placeholder="BNI 1234567890">
@@ -156,6 +173,7 @@
                                     <input type="file" id="logo-bni" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- DANA -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet DANA</label>
                                 <input type="text" id="set-dana" class="input-glass" placeholder="081xxx (DANA)">
@@ -164,6 +182,7 @@
                                     <input type="file" id="logo-dana" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- OVO -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet OVO</label>
                                 <input type="text" id="set-ovo" class="input-glass" placeholder="081xxx (OVO)">
@@ -172,6 +191,7 @@
                                     <input type="file" id="logo-ovo" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- GOPAY -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet GoPay</label>
                                 <input type="text" id="set-gopay" class="input-glass" placeholder="081xxx (GoPay)">
@@ -180,6 +200,7 @@
                                     <input type="file" id="logo-gopay" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
+                            <!-- SHOPEEPAY -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet ShopeePay</label>
                                 <input type="text" id="set-shopeepay" class="input-glass" placeholder="081xxx (ShopeePay)">
@@ -189,8 +210,10 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <button class="btn btn-primary" style="width:100%; margin-top:20px; font-size:16px;" onclick="App.saveSettings()">Upload Logo & Simpan Pengaturan</button>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -201,19 +224,26 @@
         <div class="modal-content row-modal glass">
             <button class="modal-close" onclick="App.closeModal('modal-cart')">&times;</button>
             
+            <!-- Left: Product Info -->
             <div class="modal-half" style="border-right: 1px solid var(--glass-border); display: flex; flex-direction: column;">
+                
+                <!-- IMAGE SLIDER WRAPPER (1:1 SQUARE) -->
                 <div class="slider-wrapper">
                     <button class="slider-btn left" onclick="App.slideImage(-1)">&#10094;</button>
                     <img id="cart-img" src="" alt="Product" class="cart-img-square">
                     <button class="slider-btn right" onclick="App.slideImage(1)">&#10095;</button>
                     <div id="slider-dots" class="slider-dots"></div>
                 </div>
+
                 <h2 id="cart-title" style="margin-top:15px;">Nama Produk</h2>
                 <h3 id="cart-price" style="color:var(--primary); margin: 5px 0;">Rp 0</h3>
                 <p style="font-size:13px; color:var(--text-light);">⭐ 4.9/5 | Terjual: <span id="cart-sold">0</span></p>
+                
+                <!-- SCROLLABLE DESCRIPTION -->
                 <div class="scrollable-desc">
                     <p id="cart-desc" style="font-size:14px; line-height:1.6; padding-right:10px;">Deskripsi...</p>
                 </div>
+                
                 <div class="qty-controls" style="margin-top: auto; padding-top: 15px;">
                     <span>Jumlah:</span>
                     <button class="qty-btn" onclick="App.updateQty(-1)">-</button>
@@ -222,6 +252,7 @@
                 </div>
             </div>
 
+            <!-- Right: Checkout Form -->
             <div class="modal-half">
                 <h3>Delivery Details</h3>
                 <div style="margin-top:15px;">
@@ -266,19 +297,21 @@
                             <span>Total Pembayaran</span><span id="sum-total">Rp 0</span>
                         </div>
                     </div>
+
                     <button class="btn btn-primary" style="width:100%; font-size:16px;" onclick="App.proceedToPayment()">Lanjut Ke Pembayaran</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- PAYMENT MODAL -->
+    <!-- UPGRADED PAYMENT MODAL (DYNAMIC LOGO) -->
     <div id="modal-payment" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
             <button class="modal-close" onclick="App.closeModal('modal-payment')">&times;</button>
             <h2 style="text-align:center;">Pilih Pembayaran</h2>
             <p style="text-align:center; color:var(--text-light); margin-bottom:10px;">Total Tagihan: <strong id="pay-total-display" style="font-size:22px; color:var(--danger)">Rp 0</strong></p>
 
+            <!-- Hidden input to store the selected payment method -->
             <input type="hidden" id="pay-method" value="QRIS">
 
             <div class="payment-section">
@@ -298,7 +331,9 @@
                 </div>
             </div>
 
-            <div id="pay-instruction" class="glass-card" style="background: rgba(255,255,255,0.8); text-align:center; margin-top:20px;"></div>
+            <div id="pay-instruction" class="glass-card" style="background: rgba(255,255,255,0.8); text-align:center; margin-top:20px;">
+                <!-- Dynamically filled by JS -->
+            </div>
 
             <div style="margin-top: 20px;">
                 <label style="font-size:13px; font-weight:600; display:block; margin-bottom:8px; text-align:center;">Upload Bukti Pembayaran <span style="color:red">*</span></label>
@@ -353,6 +388,9 @@
                 <p><strong>Customer:</strong> <span id="ord-name"></span></p>
                 <p><strong>WA:</strong> <span id="ord-wa"></span></p>
                 <p><strong>Alamat:</strong> <span id="ord-address"></span></p>
+                <!-- UI UNTUK MENAMPILKAN PIN LOCATION DARI DATABASE -->
+                <p id="ord-location-container" style="display:none; margin-top:5px;"><strong>Pin Lokasi:</strong> <a id="ord-location" href="#" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:500;">📍 Buka di Google Maps</a></p>
+                
                 <hr style="margin:10px 0; border:0; border-top:1px solid #ccc;">
                 <p><strong>Produk:</strong> <span id="ord-product"></span> (x<span id="ord-qty"></span>)</p>
                 <p><strong>Pengiriman:</strong> <span id="ord-ship"></span></p>
@@ -386,6 +424,7 @@
                 isMakassar: false,
                 shippingCost: 15000,
                 uniqueCode: 0,
+                liveLocation: "-", // STATE BARU UNTUK GOOGLE MAPS LINK
                 
                 sliderImages: [],
                 sliderIndex: 0,
@@ -393,8 +432,7 @@
                 currentOrderTotal: 0,
                 selectedOrderForAdmin: null,
 
-                // --- NEW STATE UNTUK REORDER GAMBAR ---
-                productImages: [] // Menyimpan Array Gambar (Bisa dari database atau file lokal)
+                productImages: [] 
             },
 
             init() {
@@ -627,6 +665,7 @@
                 App.state.cartItem = product;
                 App.state.cartQty = 1;
                 App.state.uniqueCode = Math.floor(Math.random() * 900) + 100;
+                App.state.liveLocation = "-"; // Reset Live Location Data
                 
                 if(product.Image_URLs) {
                     App.state.sliderImages = product.Image_URLs.split(',').map(s => s.trim()).filter(Boolean);
@@ -690,7 +729,12 @@
                     App.showToast("Mengambil lokasi...");
                     navigator.geolocation.getCurrentPosition(pos => {
                         App.state.isMakassar = true;
-                        document.getElementById('loc-status').innerText = "Lokasi terdeteksi: Area Makassar (Ongkir diaplikasikan)";
+                        
+                        // --- UPGRADE: GENERATE & SIMPAN GOOGLE MAPS LINK ---
+                        const mapsLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                        App.state.liveLocation = mapsLink;
+                        
+                        document.getElementById('loc-status').innerHTML = `Lokasi terdeteksi: Area Makassar (Ongkir diaplikasikan) <br><a href="${mapsLink}" target="_blank" style="color:var(--accent); text-decoration:underline;">Lihat Pin Lokasi Anda</a>`;
                         App.calcCartTotal();
                     }, err => {
                         App.showToast("Gagal mendapat lokasi. Silakan isi manual.");
@@ -777,7 +821,6 @@
                 }
             },
 
-            // --- UPGRADED: DRAG, SHIFT, AND DROP IMAGE MANAGER ---
             handleProductImageSelect(event) {
                 const files = event.target.files;
                 if (!files || files.length === 0) return;
@@ -794,7 +837,7 @@
                     };
                     reader.readAsDataURL(file);
                 });
-                event.target.value = ''; // Reset input
+                event.target.value = ''; 
             },
 
             renderProductImagePreview() {
@@ -822,20 +865,18 @@
                 const newIndex = index + dir;
                 if (newIndex < 0 || newIndex >= App.state.productImages.length) return;
                 
-                // Swap posisi array
                 const temp = App.state.productImages[index];
                 App.state.productImages[index] = App.state.productImages[newIndex];
                 App.state.productImages[newIndex] = temp;
                 
-                App.renderProductImagePreview(); // Render ulang sesuai urutan
+                App.renderProductImagePreview(); 
             },
 
             removeProductImage(index) {
-                App.state.productImages.splice(index, 1); // Hapus dari state array
+                App.state.productImages.splice(index, 1); 
                 App.renderProductImagePreview();
             },
 
-            // Helper kompres 1 file untuk payload Ordered Array
             compressSingleFile(file) {
                 return new Promise((resolve) => {
                     const reader = new FileReader();
@@ -873,7 +914,6 @@
                 document.getElementById('prod-sold').value = '0';
                 document.getElementById('prod-img').value = '';
                 
-                // Reset State Image Product Manager
                 App.state.productImages = [];
 
                 if(id) {
@@ -889,7 +929,6 @@
                         document.getElementById('prod-stock').value = p.Stock;
                         document.getElementById('prod-sold').value = p.Sold || 0;
                         
-                        // Extract Old images and load to Visual Manager
                         if(p.Image_URLs) {
                             const urls = p.Image_URLs.split(',').map(u => u.trim()).filter(Boolean);
                             urls.forEach(url => {
@@ -901,7 +940,6 @@
                     document.getElementById('prod-modal-title').innerText = "+ Tambah Produk";
                 }
                 
-                // Render Visual Array
                 App.renderProductImagePreview();
                 document.getElementById('modal-product').classList.remove('hidden');
             },
@@ -910,7 +948,6 @@
                 try {
                     App.showLoader(true);
                     
-                    // Bundle Data Sesuai Urutan di state productImages
                     let orderedImagesPayload = [];
                     for (let img of App.state.productImages) {
                         if (img.type === 'url') {
@@ -935,7 +972,7 @@
                         capital: parseInt(document.getElementById('prod-cogs').value),
                         stock: parseInt(document.getElementById('prod-stock').value),
                         sold: parseInt(document.getElementById('prod-sold').value),
-                        orderedImages: orderedImagesPayload // Mengirim Urutan Array baru yang Presisi
+                        orderedImages: orderedImagesPayload 
                     };
 
                     const res = await App.apiCall({ action: "saveProduct", data: data });
@@ -990,7 +1027,7 @@
                         name: document.getElementById('co-name').value,
                         wa: document.getElementById('co-wa').value,
                         address: document.getElementById('co-address').value,
-                        location: App.state.isMakassar ? "Makassar" : "-",
+                        location: App.state.liveLocation, // --- UPGRADE: MENGIRIM LINK GOOGLE MAPS DARI STATE ---
                         courier: document.querySelector('input[name="shipping"]:checked').value,
                         subtotal: App.state.cartItem.Price * App.state.cartQty,
                         shippingFee: App.state.isMakassar ? App.state.shippingCost : 0,
@@ -1149,6 +1186,16 @@
                 document.getElementById('ord-wa').innerText = o.WA;
                 document.getElementById('ord-address').innerText = o.Address;
                 
+                // --- UPGRADE: MENAMPILKAN PIN LOKASI MAPS ---
+                const locContainer = document.getElementById('ord-location-container');
+                const locLink = document.getElementById('ord-location');
+                if (o.Location_Data && o.Location_Data.startsWith('http')) {
+                    locLink.href = o.Location_Data;
+                    locContainer.style.display = 'block';
+                } else {
+                    locContainer.style.display = 'none';
+                }
+
                 let itemStr = "-";
                 let qtyStr = "-";
                 try {
@@ -1252,7 +1299,6 @@
                 });
             },
 
-            // Helper kompresi logo Admin Setting
             async compressLogoToJSON(fileInputId) {
                 const fileInput = document.getElementById(fileInputId);
                 if (!fileInput || fileInput.files.length === 0) return null;
@@ -1269,7 +1315,7 @@
                         img.src = event.target.result;
                         img.onload = () => {
                             const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 400; // Cukup 400 untuk logo
+                            const MAX_WIDTH = 400; 
                             let w = img.width, h = img.height;
                             if (w > h && w > MAX_WIDTH) { h *= MAX_WIDTH / w; w = MAX_WIDTH; }
                             else if (h > MAX_WIDTH) { w *= MAX_WIDTH / h; h = MAX_WIDTH; }
