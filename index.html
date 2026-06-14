@@ -611,13 +611,13 @@
                 <input type="hidden" id="prod-id">
                 <input type="hidden" id="prod-existing-img">
                 <input type="text" id="prod-name" class="input-glass" placeholder="Nama Produk">
-                <select id="prod-cat" class="input-glass">
-                    <option value="Daster Kartika">Daster Kartika</option>
-                    <option value="Daster Elok">Daster Elok</option>
-                    <option value="Daster Setcel">Daster Setcel</option>
-                    <option value="Daster Gajah Putih">Daster Gajah Putih</option>
-                    <option value="Daster Dipakemama">Daster Dipakemama</option>
-                </select>
+                
+                <!-- UPGRADE: DROPDOWN DINAMIS (BISA PILIH ATAU KETIK BARU) -->
+                <input type="text" id="prod-cat" list="cat-list" class="input-glass" placeholder="Ketik kategori baru atau pilih dari daftar...">
+                <datalist id="cat-list">
+                    <!-- Otomatis diisi oleh JavaScript dari Database -->
+                </datalist>
+
                 <textarea id="prod-desc" class="input-glass" placeholder="Deskripsi"></textarea>
                 
                 <div style="display:flex; gap:10px;">
@@ -660,7 +660,7 @@
 
     <script>
         // === KONFIGURASI URL API ZETTBOT ===
-        const API_URL = "https://script.google.com/macros/s/AKfycbyR6w2G4iR5L12J1F7H2qFhYj92z0V79A_0lA2uXh6kL8pW/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbw45o3mq7UYcuB8knNfdOr7mKLmwFM1sg_52DoircJFjXI4wX4DCE6hilyOd-0bA5mA/exec";
 
         // === STATE MANAGEMENT ===
         const App = {
@@ -705,10 +705,6 @@
 
             // --- PUSAT KONEKSI API & MOCK DATA (ERROR FALLBACK) ---
             async apiCall(payload) {
-                const isDummyURL = API_URL.includes("AKfycbyR6w2G4iR5L12J1F7H2qFhYj92z0V79A_0lA2uXh6kL8pW");
-                
-                if (isDummyURL) return App.mockApi(payload);
-
                 try {
                     const res = await fetch(API_URL, {
                         method: 'POST',
@@ -819,21 +815,30 @@
                 document.getElementById('login-pass').value = '';
             },
 
-            // --- CUSTOMER HOME ---
+            // --- CUSTOMER HOME & DYNAMIC CATEGORY ---
             renderCategories() {
-                const cats = new Set(App.state.products.map(p => p.Category));
+                // Mendapatkan list unik kategori dari data produk di DB
+                const cats = new Set(App.state.products.map(p => p.Category).filter(Boolean));
                 const catArray = Array.from(cats);
+                
                 if(catArray.length > 0 && !catArray.includes(App.state.category)) App.state.category = catArray[0];
 
+                // Render Kategori di Halaman Customer
                 const container = document.getElementById('category-container');
                 if (catArray.length === 0) {
                      container.innerHTML = '<div class="chip active">Belum Ada Produk</div>';
-                     return;
+                } else {
+                     container.innerHTML = catArray.map(cat => `
+                        <div class="chip ${App.state.category === cat ? 'active' : ''}" 
+                             onclick="App.setCategory('${cat}')">${cat}</div>
+                     `).join('');
                 }
-                container.innerHTML = catArray.map(cat => `
-                    <div class="chip ${App.state.category === cat ? 'active' : ''}" 
-                         onclick="App.setCategory('${cat}')">${cat}</div>
-                `).join('');
+
+                // Render Kategori Dinamis di Admin Modal (Datalist)
+                const datalist = document.getElementById('cat-list');
+                if(datalist) {
+                    datalist.innerHTML = catArray.map(c => `<option value="${c}">`).join('');
+                }
             },
 
             setCategory(cat) {
@@ -1112,6 +1117,7 @@
                 document.getElementById('prod-id').value = '';
                 document.getElementById('prod-existing-img').value = '';
                 document.getElementById('prod-name').value = '';
+                document.getElementById('prod-cat').value = '';
                 document.getElementById('prod-desc').value = '';
                 document.getElementById('prod-price').value = '';
                 document.getElementById('prod-cogs').value = '';
@@ -1171,7 +1177,7 @@
                 
                 App.showLoader(false);
                 if(res) {
-                    App.fetchData(); // Sync entire DB
+                    App.fetchData(); // Sync entire DB (merender ulang filter kategori)
                     App.closeModal('modal-product');
                     App.showToast("Produk sukses disimpan ke Server!");
                 }
