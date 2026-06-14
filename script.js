@@ -1,43 +1,79 @@
 /**
  * ==========================================
- * 1. APP STATE & MOCK DATA
+ * 1. APP STATE & GAS CONNECTION
  * ==========================================
- * Data ini bertindak sebagai fallback/mock sebelum terhubung ke Code.gs
  */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbw45o3mq7UYcuB8knNfdOr7mKLmwFM1sg_52DoircJFjXI4wX4DCE6hilyOd-0bA5mA/exec"; // Ganti setelah deploy Code.gs
+
+// Link Google Apps Script / Backend Anda
+const GAS_URL = "[https://script.google.com/macros/s/AKfycbw45o3mq7UYcuB8knNfdOr7mKLmwFM1sg_52DoircJFjXI4wX4DCE6hilyOd-0bA5mA/exec](https://script.google.com/macros/s/AKfycbw45o3mq7UYcuB8knNfdOr7mKLmwFM1sg_52DoircJFjXI4wX4DCE6hilyOd-0bA5mA/exec)";
 
 const state = {
     categories: ["Daster Kartika", "Daster Elok", "Daster Setcel", "Daster Gajah Putih", "Daster Dipakemama"],
     activeCategory: "Daster Kartika",
-    products: [
-        { id: "P1", name: "Daster Kartika Renda Premium", category: "Daster Kartika", price: 65000, modal: 45000, stock: 20, sold: 126, desc: "Bahan adem, nyaman dipakai sehari-hari.", img: "https://images.unsplash.com/photo-1583391733958-6c782781b0a2?auto=format&fit=crop&w=300&q=80" },
-        { id: "P2", name: "Daster Kartika Motif Bunga", category: "Daster Kartika", price: 45000, modal: 30000, stock: 50, sold: 89, desc: "Motif bunga cantik, rayon super.", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=300&q=80" },
-        { id: "P3", name: "Daster Elok Lengan Pendek", category: "Daster Elok", price: 55000, modal: 40000, stock: 15, sold: 42, desc: "Cocok untuk santai.", img: "https://images.unsplash.com/photo-1515347619362-71008cb13645?auto=format&fit=crop&w=300&q=80" }
-    ],
-    orders: [
-        { id: "ORD-1234", date: "2023-10-27 14:30", customer: "Ibu Tati", total: 65000, status: "PENDING_QRIS", items: "1x Daster Kartika Renda" },
-        { id: "ORD-1235", date: "2023-10-27 15:00", customer: "Siska", total: 45000, status: "SUCCESS_BCA", items: "1x Daster Kartika Bunga" }
-    ],
-    settings: { qris: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021226660014ID.CO.QRIS.WWW...", bca: "1234567890 a.n Tasbon", ewallet: "08123456789 (OVO/Dana)" },
+    products: [],  // Akan ditarik dari DB
+    orders: [],    // Dummy lokal sementara (bisa dikembangkan API getOrders nanti)
+    settings: { qris: "", bca: "", ewallet: "" }, // Akan ditarik dari DB
     cart: { productId: null, qty: 1, isMakassar: false, ongkir: 15000 },
     currentAdminTab: 'overview',
-    tempSelectedOrder: null
+    tempSelectedOrder: null,
+    paymentMethodSelected: ''
 };
 
 /**
  * ==========================================
- * 2. UTILITY FUNCTIONS
+ * 2. UTILITY & FETCH FUNCTIONS
  * ==========================================
  */
-const formatRp = (num) => 'Rp ' + num.toLocaleString('id-ID');
+const formatRp = (num) => 'Rp ' + Number(num).toLocaleString('id-ID');
 const showElement = (id) => document.getElementById(id).classList.remove('hidden');
 const hideElement = (id) => document.getElementById(id).classList.add('hidden');
 const openModal = (id) => document.getElementById(id).style.display = 'flex';
 const closeModal = (id) => document.getElementById(id).style.display = 'none';
 
+function showLoading(text = "Memuat Data...") {
+    document.getElementById('loading-text').innerText = text;
+    document.getElementById('loading-overlay').style.display = 'flex';
+}
+
+function hideLoading() {
+    document.getElementById('loading-overlay').style.display = 'none';
+}
+
+// Fetch Initial Data from Google Apps Script
+async function fetchInitialData() {
+    try {
+        showLoading("Menghubungkan ke Database...");
+        
+        // Fetch Products
+        const resProducts = await fetch(GAS_URL + "?action=getProducts");
+        const productsData = await resProducts.json();
+        if(productsData && productsData.length > 0) {
+            state.products = productsData;
+        }
+
+        // Fetch Settings
+        const resSettings = await fetch(GAS_URL + "?action=getSettings");
+        const settingsData = await resSettings.json();
+        if(settingsData && Object.keys(settingsData).length > 0) {
+            state.settings = settingsData;
+        }
+
+        hideLoading();
+        document.getElementById('app').style.display = 'block';
+        initCustomerView();
+        
+    } catch (error) {
+        console.error("Gagal menarik data:", error);
+        alert("Gagal memuat data dari database. Harap pastikan link GAS_URL valid dan sudah di-Deploy sebagai 'Anyone'.");
+        hideLoading();
+        document.getElementById('app').style.display = 'block';
+        initCustomerView(); // Tetap render meski kosong
+    }
+}
+
 /**
  * ==========================================
- * 3. CUSTOMER VIEW LOGIC (FRONTEND)
+ * 3. CUSTOMER VIEW LOGIC
  * ==========================================
  */
 function initCustomerView() {
@@ -63,13 +99,13 @@ function renderProducts() {
     const filtered = state.products.filter(p => p.category === state.activeCategory);
     
     if(filtered.length === 0) {
-        container.innerHTML = `<p style="color:var(--text-gray);">Belum ada produk di kategori ini.</p>`;
+        container.innerHTML = `<p style="color:var(--text-gray);">Belum ada produk di kategori ini (atau belum ditarik dari Database).</p>`;
         return;
     }
 
     container.innerHTML = filtered.map(p => `
         <div class="product-card glass" onclick="openCartModal('${p.id}')">
-            <img src="${p.img}" alt="${p.name}" class="product-img">
+            <img src="${p.img}" alt="${p.name}" class="product-img" onerror="this.src='[https://images.unsplash.com/photo-1515347619362-71008cb13645?auto=format&fit=crop&w=300&q=80](https://images.unsplash.com/photo-1515347619362-71008cb13645?auto=format&fit=crop&w=300&q=80)'">
             <div class="product-title">${p.name}</div>
             <div class="product-price">${formatRp(p.price)}</div>
             <button class="btn btn-dark" style="width:100%; margin-top:10px;">+ Beli</button>
@@ -85,9 +121,8 @@ function openCartModal(productId) {
     state.cart.productId = product.id;
     state.cart.qty = 1;
     
-    // Render Left Side (Product Details)
     const detailsHtml = `
-        <img src="${product.img}" style="width:100%; border-radius:12px; height:200px; object-fit:cover; margin-bottom:15px;">
+        <img src="${product.img}" style="width:100%; border-radius:12px; height:200px; object-fit:cover; margin-bottom:15px;" onerror="this.src='[https://images.unsplash.com/photo-1515347619362-71008cb13645?auto=format&fit=crop&w=300&q=80](https://images.unsplash.com/photo-1515347619362-71008cb13645?auto=format&fit=crop&w=300&q=80)'">
         <h3>${product.name}</h3>
         <p style="color:#f39c12; font-size:0.9rem;">★★★★★ (${product.sold} sold)</p>
         <h2 style="margin: 10px 0;">${formatRp(product.price)}</h2>
@@ -98,6 +133,7 @@ function openCartModal(productId) {
             <span id="cart-qty-display">1</span>
             <button class="qty-btn" onclick="changeQty(1)">+</button>
         </div>
+        <p style="font-size:0.85rem; color:var(--text-gray);">Sisa Stok: ${product.stock}</p>
     `;
     document.getElementById('cart-product-details').innerHTML = detailsHtml;
     updateCartSummary();
@@ -134,7 +170,6 @@ function updateCartSummary() {
     document.getElementById('cart-total').innerText = formatRp(total);
 }
 
-// Geolocation
 function getLocation() {
     const status = document.getElementById('location-status');
     status.innerText = "Mendeteksi lokasi...";
@@ -144,7 +179,6 @@ function getLocation() {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
             try {
-                // Using free nominatim for reverse geocoding
                 const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                 const data = await res.json();
                 const address = data.display_name;
@@ -174,7 +208,10 @@ function getLocation() {
 // Checkout & Payment
 function openPaymentModal() {
     const name = document.getElementById('cust-name').value;
-    if(!name) return alert('Mohon isi Nama Lengkap');
+    const wa = document.getElementById('cust-wa').value;
+    const address = document.getElementById('cust-address').value;
+
+    if(!name || !wa || !address) return alert('Mohon lengkapi Nama, WA, dan Alamat Anda');
     
     closeModal('modal-cart');
     
@@ -187,33 +224,80 @@ function openPaymentModal() {
 }
 
 function selectPayment(method) {
+    state.paymentMethodSelected = method;
     const area = document.getElementById('payment-details-area');
     const totalStr = document.getElementById('payment-amount').innerText;
     
     if(method === 'QRIS') {
+        const qrisString = state.settings.qris || "00020101021226660014ID.CO.QRIS.WWW..."; // default if empty
         area.innerHTML = `
             <p style="margin-bottom:10px;">Scan QRIS di bawah ini:</p>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${state.settings.qris}" style="border-radius:10px;">
+            <img src="[https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=$](https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=$){qrisString}" style="border-radius:10px;">
         `;
     } else if(method === 'BCA') {
         area.innerHTML = `
             <h3 style="color:#0066AE">BCA</h3>
-            <p style="font-size:1.5rem; letter-spacing:2px; margin:10px 0;">${state.settings.bca}</p>
+            <p style="font-size:1.5rem; letter-spacing:2px; margin:10px 0;">${state.settings.bca || "1234567890"}</p>
             <p>Transfer sejumlah <b>${totalStr}</b></p>
         `;
     } else {
         area.innerHTML = `
             <h3 style="color:#4a2b75">OVO / DANA / ShopeePay</h3>
-            <p style="font-size:1.5rem; letter-spacing:2px; margin:10px 0;">${state.settings.ewallet}</p>
+            <p style="font-size:1.5rem; letter-spacing:2px; margin:10px 0;">${state.settings.ewallet || "08123456789"}</p>
             <p>Transfer sejumlah <b>${totalStr}</b></p>
         `;
     }
 }
 
-function confirmCustomerOrder() {
-    alert('Pesanan berhasil dibuat! Kami akan memprosesnya setelah pembayaran terverifikasi.');
-    closeModal('modal-payment');
-    // Logic push to Code.gs here
+// POST Request for creating order
+async function confirmCustomerOrder() {
+    const btn = document.getElementById('btn-confirm-order');
+    btn.innerText = "Memproses...";
+    btn.disabled = true;
+
+    const name = document.getElementById('cust-name').value;
+    const wa = document.getElementById('cust-wa').value;
+    const address = document.getElementById('cust-address').value;
+    
+    const product = state.products.find(p => p.id === state.cart.productId);
+    const total = (product.price * state.cart.qty) + (state.cart.isMakassar ? state.cart.ongkir : 0);
+    
+    const payload = {
+        action: "createOrder",
+        customerName: name,
+        wa: wa,
+        address: address,
+        itemsString: `${state.cart.qty}x ${product.name}`,
+        total: total,
+        status: `PENDING_${state.paymentMethodSelected.toUpperCase()}`,
+        productId: product.id,
+        qty: state.cart.qty
+    };
+
+    try {
+        const response = await fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        
+        if(result.status === "success") {
+            alert('Pesanan berhasil dibuat! \nID Pesanan: ' + result.orderId + '\nKami akan memprosesnya setelah pembayaran terverifikasi.');
+            // Tambahkan ke state lokal untuk dilihat admin tanpa refresh
+            state.orders.unshift({
+                id: result.orderId, date: new Date().toLocaleString("id-ID"), customer: name, total: total, status: payload.status, items: payload.itemsString
+            });
+            closeModal('modal-payment');
+        } else {
+            alert('Gagal membuat pesanan: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan koneksi saat mengirim pesanan.');
+    } finally {
+        btn.innerText = "Saya Sudah Bayar";
+        btn.disabled = false;
+    }
 }
 
 /**
@@ -269,7 +353,6 @@ function logoutAdmin() {
 function switchAdminTab(tab) {
     state.currentAdminTab = tab;
     
-    // Update sidebar UI
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     event.target.classList.add('active');
 
@@ -284,9 +367,8 @@ function switchAdminTab(tab) {
 }
 
 function renderOverview(container) {
-    // Kalkulasi sederhana
     const totalPenjualan = state.orders.filter(o => o.status.includes('SUCCESS')).reduce((sum, o) => sum + o.total, 0);
-    const totalStok = state.products.reduce((sum, p) => sum + p.stock, 0);
+    const totalStok = state.products.reduce((sum, p) => sum + Number(p.stock), 0);
 
     container.innerHTML = `
         <h2>Dashboard Overview</h2>
@@ -296,7 +378,7 @@ function renderOverview(container) {
                 <h3>${formatRp(totalPenjualan)}</h3>
             </div>
             <div class="glass stat-card">
-                <p>Total Pesanan</p>
+                <p>Sesi Pesanan Aktif</p>
                 <h3>${state.orders.length}</h3>
             </div>
             <div class="glass stat-card">
@@ -333,7 +415,7 @@ function calcPosTotal() {
     document.getElementById('pos-total').innerText = formatRp(p.price * qty);
 }
 
-function processPOS() {
+async function processPOS() {
     const pid = document.getElementById('pos-product').value;
     const qty = parseInt(document.getElementById('pos-qty').value) || 0;
     const name = document.getElementById('pos-name').value;
@@ -343,21 +425,37 @@ function processPOS() {
     const p = state.products.find(x => x.id === pid);
     if(qty > p.stock) return alert('Stok tidak cukup!');
 
-    // Update state (mock db update)
-    p.stock -= qty;
-    p.sold += qty;
-    
-    state.orders.unshift({
-        id: "OFF-" + Math.floor(Math.random()*10000),
-        date: new Date().toISOString().slice(0,16).replace('T',' '),
-        customer: name,
+    const payload = {
+        action: "createOrder",
+        customerName: name,
+        wa: "-",
+        address: "Offline Store",
+        itemsString: `${qty}x ${p.name}`,
         total: p.price * qty,
         status: "SUCCESS_OFFLINE",
-        items: `${qty}x ${p.name}`
-    });
+        productId: p.id,
+        qty: qty
+    };
 
-    alert('Transaksi Kasir Sukses!');
-    switchAdminTab('overview'); // refresh
+    showLoading("Memproses Transaksi Kasir...");
+    try {
+        const response = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await response.json();
+        
+        if(result.status === "success") {
+            p.stock -= qty;
+            p.sold += qty;
+            state.orders.unshift({
+                id: result.orderId, date: new Date().toLocaleString("id-ID"), customer: name, total: payload.total, status: payload.status, items: payload.itemsString
+            });
+            alert('Transaksi Kasir Sukses!');
+            switchAdminTab('overview');
+        }
+    } catch (error) {
+        alert('Gagal memproses transaksi');
+    } finally {
+        hideLoading();
+    }
 }
 
 function renderCatalog(container) {
@@ -411,10 +509,64 @@ function openProductModal(id = null) {
     openModal('modal-admin-product');
 }
 
-function saveProduct() {
-    alert('Fungsi ini akan mengupload foto ke GDrive via Code.gs dan menyimpan data ke Spreadsheet.');
-    closeModal('modal-admin-product');
-    // Implementation detail: Use FileReader to convert file to base64, then fetch() to SCRIPT_URL
+async function saveProduct() {
+    const btn = document.getElementById('btn-save-product');
+    btn.innerText = "Menyimpan...";
+    btn.disabled = true;
+
+    const id = document.getElementById('prod-id').value;
+    const name = document.getElementById('prod-name').value;
+    const category = document.getElementById('prod-cat').value;
+    const desc = document.getElementById('prod-desc').value;
+    const price = document.getElementById('prod-price').value;
+    const modalPrice = document.getElementById('prod-modal').value;
+    const stock = document.getElementById('prod-stock').value;
+    const fileInput = document.getElementById('prod-file');
+
+    let fileBase64 = null;
+    let fileName = null;
+
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        fileName = file.name;
+        fileBase64 = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    const payload = {
+        action: "uploadProduct",
+        id: id,
+        name: name,
+        category: category,
+        desc: desc,
+        price: price,
+        modal: modalPrice,
+        stock: stock,
+        fileBase64: fileBase64,
+        fileName: fileName
+    };
+
+    try {
+        const response = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await response.json();
+        if(result.status === "success") {
+            alert(result.message);
+            closeModal('modal-admin-product');
+            // Reload data
+            await fetchInitialData();
+            switchAdminTab('catalog');
+        } else {
+            alert("Gagal: " + result.message);
+        }
+    } catch (e) {
+        alert("Terjadi kesalahan saat menyimpan produk.");
+    } finally {
+        btn.innerText = "Simpan & Tampilkan";
+        btn.disabled = false;
+    }
 }
 
 function renderTransactions(container) {
@@ -465,33 +617,72 @@ function openOrderDetail(id) {
     openModal('modal-order-detail');
 }
 
-function confirmAdminTransaction() {
+async function confirmAdminTransaction() {
     if(state.tempSelectedOrder) {
-        state.tempSelectedOrder.status = state.tempSelectedOrder.status.replace('PENDING', 'SUCCESS');
-        alert('Status berhasil diubah menjadi SUCCESS!');
-        closeModal('modal-order-detail');
-        switchAdminTab('transactions'); // refresh
+        const newStatus = state.tempSelectedOrder.status.replace('PENDING', 'SUCCESS');
+        
+        // Coba ekstrak ID Product dan Qty dari itemsString kasar
+        let qty = 1; let pid = null;
+        const itemsStr = state.tempSelectedOrder.items;
+        const match = itemsStr.match(/^(\d+)x\s+(.*)/);
+        if(match) {
+            qty = parseInt(match[1]);
+            const pName = match[2].trim();
+            const prod = state.products.find(p => p.name === pName);
+            if(prod) pid = prod.id;
+        }
+
+        const payload = {
+            action: "updateOrderStatus",
+            orderId: state.tempSelectedOrder.id,
+            newStatus: newStatus,
+            productId: pid,
+            qty: qty
+        };
+
+        const btn = document.getElementById('btn-confirm-trx');
+        btn.innerText = "Memproses..."; btn.disabled = true;
+
+        try {
+            const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+            const result = await res.json();
+            
+            if(result.status === "success") {
+                state.tempSelectedOrder.status = newStatus;
+                if(pid) {
+                    const p = state.products.find(x => x.id === pid);
+                    if(p) { p.stock -= qty; p.sold += qty; }
+                }
+                alert('Status berhasil diubah menjadi SUCCESS!');
+                closeModal('modal-order-detail');
+                switchAdminTab('transactions');
+            } else {
+                alert('Gagal update status: ' + result.message);
+            }
+        } catch(e) {
+            alert('Gagal menghubungi server.');
+        } finally {
+            btn.innerText = "Confirmation Transaction (Set SUCCESS)"; btn.disabled = false;
+        }
     }
 }
 
 function renderFinance(container) {
-    // Kalkulasi Akuntansi
     const successOrders = state.orders.filter(o => o.status.includes('SUCCESS'));
     const gross = successOrders.reduce((sum, o) => sum + o.total, 0);
     
-    // Dummy HPP calculation (in real app, we track modal per item sold)
-    const hpp = successOrders.reduce((sum, o) => sum + (o.total * 0.7), 0); // Asumsi Modal 70% dari harga
+    const hpp = successOrders.reduce((sum, o) => sum + (o.total * 0.7), 0); 
     const net = gross - hpp;
 
     container.innerHTML = `
-        <h2>Laporan Keuangan</h2>
+        <h2>Laporan Keuangan Sesi Ini</h2>
         <div class="glass" style="margin-top:20px; padding:30px;">
             <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(0,0,0,0.1); padding-bottom:10px; margin-bottom:10px;">
                 <span>Pendapatan Kotor (Omzet)</span>
                 <b>${formatRp(gross)}</b>
             </div>
             <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(0,0,0,0.1); padding-bottom:10px; margin-bottom:10px; color:var(--danger)">
-                <span>Total HPP / Modal Barang</span>
+                <span>Total HPP / Modal Barang (Estimasi)</span>
                 <b>- ${formatRp(hpp)}</b>
             </div>
             <div style="display:flex; justify-content:space-between; margin-top:20px; font-size:1.5rem; color:var(--success)">
@@ -507,15 +698,18 @@ function renderSettings(container) {
         <h2>Pengaturan Sistem</h2>
         <div class="glass" style="margin-top:20px; padding:20px; max-width:600px;">
             <label>Data QRIS (Link String):</label>
-            <input type="text" class="input-glass" value="${state.settings.qris}">
+            <input type="text" class="input-glass" value="${state.settings.qris || ''}">
             
             <label>No. Rekening BCA:</label>
-            <input type="text" class="input-glass" value="${state.settings.bca}">
+            <input type="text" class="input-glass" value="${state.settings.bca || ''}">
             
             <label>No. E-Wallet (Dana/OVO/ShopeePay):</label>
-            <input type="text" class="input-glass" value="${state.settings.ewallet}">
+            <input type="text" class="input-glass" value="${state.settings.ewallet || ''}">
             
-            <button class="btn btn-dark" style="width:100%; margin-top:10px;" onclick="alert('Pengaturan disimpan!')">Simpan Pengaturan</button>
+            <button class="btn btn-dark" style="width:100%; margin-top:10px;" onclick="alert('Untuk mengubah pengaturan harap edit manual via Spreadsheet Settings untuk saat ini.')">Simpan Pengaturan</button>
         </div>
     `;
 }
+
+// INIT SAAT HALAMAN DIMUAT
+window.onload = fetchInitialData;
