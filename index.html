@@ -242,23 +242,26 @@
                         <div class="summary-row" id="row-shipping" style="display:none;">
                             <span>Ongkos Kirim (Makassar)</span><span id="sum-shipping">Rp 15.000</span>
                         </div>
+                        <div class="summary-row" style="color:var(--accent);">
+                            <span>Kode Unik Transfer</span><span id="sum-unique">Rp 0</span>
+                        </div>
                         <div class="summary-row total">
                             <span>Total Pembayaran</span><span id="sum-total">Rp 0</span>
                         </div>
                     </div>
 
-                    <button class="btn btn-primary" style="width:100%; font-size:16px;" onclick="App.proceedToPayment()">Checkout & Bayar</button>
+                    <button class="btn btn-primary" style="width:100%; font-size:16px;" onclick="App.proceedToPayment()">Lanjut Ke Pembayaran</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- UPGRADED PAYMENT MODAL -->
+    <!-- UPGRADED PAYMENT MODAL (WITH UPLOAD) -->
     <div id="modal-payment" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
             <button class="modal-close" onclick="App.closeModal('modal-payment')">&times;</button>
             <h2 style="text-align:center;">Pilih Pembayaran</h2>
-            <p style="text-align:center; color:var(--text-light); margin-bottom:10px;">Total: <strong id="pay-total-display">Rp 0</strong></p>
+            <p style="text-align:center; color:var(--text-light); margin-bottom:10px;">Total Tagihan: <strong id="pay-total-display" style="font-size:22px; color:var(--danger)">Rp 0</strong></p>
 
             <!-- Hidden input to store the selected payment method -->
             <input type="hidden" id="pay-method" value="QRIS">
@@ -298,10 +301,16 @@
                 <!-- Dynamically filled by JS -->
             </div>
 
-            <button class="btn btn-primary" style="width:100%; margin-top:20px; font-size:16px;" onclick="App.confirmOrder()">Confirm Method & Bayar</button>
+            <div style="margin-top: 20px;">
+                <label style="font-size:13px; font-weight:600; display:block; margin-bottom:8px; text-align:center;">Upload Bukti Pembayaran <span style="color:red">*</span></label>
+                <input type="file" id="pay-receipt" class="input-glass" accept="image/*" style="margin-bottom:0;">
+            </div>
+
+            <button class="btn btn-primary" style="width:100%; margin-top:15px; font-size:16px;" onclick="App.confirmOrder()">Upload Bukti & Konfirmasi Order</button>
         </div>
     </div>
 
+    <!-- MODAL TAMBAH PRODUK -->
     <div id="modal-product" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
             <button class="modal-close" onclick="App.closeModal('modal-product')">&times;</button>
@@ -337,6 +346,7 @@
         </div>
     </div>
 
+    <!-- MODAL DETAIL TRANSAKSI ADMIN -->
     <div id="modal-order" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
             <button class="modal-close" onclick="App.closeModal('modal-order')">&times;</button>
@@ -349,8 +359,14 @@
                 <hr style="margin:10px 0; border:0; border-top:1px solid #ccc;">
                 <p><strong>Produk:</strong> <span id="ord-product"></span> (x<span id="ord-qty"></span>)</p>
                 <p><strong>Pengiriman:</strong> <span id="ord-ship"></span></p>
-                <p><strong>Total:</strong> <span id="ord-total" style="font-weight:bold; color:var(--primary)"></span></p>
+                <p><strong>Total (Incl. Kode Unik):</strong> <span id="ord-total" style="font-weight:bold; color:var(--primary)"></span></p>
                 <p><strong>Status:</strong> <span id="ord-status" style="padding:3px 8px; border-radius:4px; background:var(--primary); color:white; font-size:11px;"></span></p>
+                <hr style="margin:10px 0; border:0; border-top:1px solid #ccc;">
+                
+                <!-- PREVIEW BUKTI PEMBAYARAN -->
+                <p style="margin-bottom: 5px;"><strong>Bukti Pembayaran:</strong></p>
+                <img id="ord-receipt-img" src="" alt="Bukti Transfer" style="width:100%; max-height:250px; object-fit:contain; border-radius:8px; display:none; background:rgba(0,0,0,0.05); border: 1px solid #ccc;">
+                <p id="ord-receipt-none" style="font-size:12px; color:var(--danger); display:none; font-style:italic;">Tidak ada bukti bayar dilampirkan.</p>
             </div>
 
             <button id="btn-confirm-tx" class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="App.confirmTransaction()">Konfirmasi Transaksi (Set SUCCESS)</button>
@@ -374,6 +390,7 @@
                 cartQty: 1,
                 isMakassar: false,
                 shippingCost: 15000,
+                uniqueCode: 0, // NEW: 3 Kode Unik
                 
                 // Order Processing
                 currentOrderTotal: 0,
@@ -431,9 +448,7 @@
                                 result.data = [
                                     { ID_Product: "PRD-001", Name: "Daster Kartika Bunga", Category: "Daster Kartika", Price: 55000, Capital_Price: 35000, Stock: 100, Sold: 25, Image_URLs: "https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?auto=format&fit=crop&w=400&q=80", Desc: "Daster nyaman bahan rayon premium." },
                                     { ID_Product: "PRD-002", Name: "Daster Elok Renda", Category: "Daster Elok", Price: 65000, Capital_Price: 40000, Stock: 50, Sold: 10, Image_URLs: "https://images.unsplash.com/photo-1515347619362-71683e913a85?auto=format&fit=crop&w=400&q=80", Desc: "Daster cantik dengan aksen renda." },
-                                    { ID_Product: "PRD-003", Name: "Daster Setcel Polos", Category: "Daster Setcel", Price: 85000, Capital_Price: 55000, Stock: 75, Sold: 50, Image_URLs: "https://images.unsplash.com/photo-1434389678232-04ce6c5da41d?auto=format&fit=crop&w=400&q=80", Desc: "Satu set celana dan atasan santai." },
-                                    { ID_Product: "PRD-004", Name: "Daster Gajah Putih Polos", Category: "Daster Gajah Putih", Price: 85000, Capital_Price: 55000, Stock: 75, Sold: 50, Image_URLs: "https://images.unsplash.com/photo-1572804013309-82a891485c2e?auto=format&fit=crop&w=400&q=80", Desc: "Gajah Putih Estetik" },
-                                    { ID_Product: "PRD-005", Name: "Daster Dipakemama Cin", Category: "Daster Dipakemama", Price: 85000, Capital_Price: 55000, Stock: 75, Sold: 50, Image_URLs: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80", Desc: "Dipakemama Estetik" }
+                                    { ID_Product: "PRD-003", Name: "Daster Setcel Polos", Category: "Daster Setcel", Price: 85000, Capital_Price: 55000, Stock: 75, Sold: 50, Image_URLs: "https://images.unsplash.com/photo-1434389678232-04ce6c5da41d?auto=format&fit=crop&w=400&q=80", Desc: "Satu set celana dan atasan santai." }
                                 ];
                                 break;
                             case "getSettings":
@@ -449,7 +464,7 @@
                                 break;
                             case "getTransactions":
                                 result.data = [
-                                    { Order_ID: "ORD-DUMMY-123", Date: new Date().toLocaleDateString(), Customer_Name: "Pelanggan A", WA: "0812", Address: "Alamat A", Total: 55000, Status: "PENDING_PAYMENT", Payment_Method: "DANA", Items_Detail: '[{"id":"PRD-001","name":"Daster Kartika Bunga","qty":1,"price":55000}]' }
+                                    { Order_ID: "ORD-DUMMY-123", Date: new Date().toLocaleDateString(), Customer_Name: "Pelanggan A", WA: "0812", Address: "Alamat A", Total: 55910, Status: "PENDING_PAYMENT", Payment_Method: "DANA", Items_Detail: '[{"id":"PRD-001","name":"Daster Kartika Bunga","qty":1,"price":55000}]', Payment_Receipt: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=400&q=80" }
                                 ];
                                 break;
                             default:
@@ -570,6 +585,9 @@
                 App.state.cartItem = product;
                 App.state.cartQty = 1;
                 
+                // GENERATE 3 KODE UNIK SAAT CART DIBUKA
+                App.state.uniqueCode = Math.floor(Math.random() * 900) + 100; // Angka acak 100 s.d 999
+                
                 document.getElementById('cart-img').src = product.Image_URLs || 'dtasbon.png';
                 document.getElementById('cart-title').innerText = product.Name;
                 document.getElementById('cart-price').innerText = App.formatRp(product.Price);
@@ -612,6 +630,10 @@
                 } else {
                     document.getElementById('row-shipping').style.display = 'none';
                 }
+                
+                // TAMBAHKAN 3 KODE UNIK
+                document.getElementById('sum-unique').innerText = App.formatRp(App.state.uniqueCode);
+                total += App.state.uniqueCode;
                 
                 App.state.currentOrderTotal = total;
                 document.getElementById('sum-total').innerText = App.formatRp(total);
@@ -658,6 +680,9 @@
                 document.getElementById('modal-cart').classList.add('hidden');
                 document.getElementById('pay-total-display').innerText = App.formatRp(App.state.currentOrderTotal);
                 
+                // Reset input file bukti bayar
+                document.getElementById('pay-receipt').value = '';
+
                 // Memastikan pilihan default reset ke QRIS saat modal pembayaran dibuka
                 App.selectPayment('QRIS'); 
                 
@@ -693,7 +718,50 @@
             },
 
             async confirmOrder() {
+                // VALIDASI BUKTI PEMBAYARAN
+                const receiptInput = document.getElementById('pay-receipt');
+                if (receiptInput.files.length === 0) {
+                    App.showToast("Harap Upload Bukti Pembayaran terlebih dahulu!");
+                    return;
+                }
+
                 App.showLoader(true);
+
+                // KOMPRESI DAN KONVERSI GAMBAR KE BASE64
+                const file = receiptInput.files[0];
+                const mimeType = file.type;
+                const fileName = "Receipt_" + Date.now() + "_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                
+                const receiptBase64 = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.src = event.target.result;
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const MAX_WIDTH = 800; // Kompresi agar upload cepat
+                            const MAX_HEIGHT = 800;
+                            let width = img.width;
+                            let height = img.height;
+
+                            if (width > height) {
+                                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                            } else {
+                                if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                            resolve(dataUrl.split(',')[1]);
+                        };
+                    };
+                });
+
                 const method = document.getElementById('pay-method').value;
                 const orderData = {
                     name: document.getElementById('co-name').value,
@@ -710,7 +778,11 @@
                         name: App.state.cartItem.Name,
                         qty: App.state.cartQty,
                         price: App.state.cartItem.Price
-                    }]
+                    }],
+                    // KIRIM DATA GAMBAR KE BACKEND
+                    receiptBase64: receiptBase64,
+                    receiptMime: 'image/jpeg',
+                    receiptName: fileName
                 };
 
                 const res = await App.apiCall({ action: "processOnlineCheckout", data: orderData });
@@ -957,6 +1029,19 @@
                 document.getElementById('ord-ship').innerText = o.Courier || "-";
                 document.getElementById('ord-total').innerText = App.formatRp(o.Total);
                 document.getElementById('ord-status').innerText = o.Status;
+
+                // TAMPILKAN BUKTI PEMBAYARAN (JIKA ADA)
+                const imgEl = document.getElementById('ord-receipt-img');
+                const noneEl = document.getElementById('ord-receipt-none');
+                
+                if (o.Payment_Receipt && o.Payment_Receipt.startsWith('http')) {
+                    imgEl.src = o.Payment_Receipt;
+                    imgEl.style.display = 'block';
+                    noneEl.style.display = 'none';
+                } else {
+                    imgEl.style.display = 'none';
+                    noneEl.style.display = 'block';
+                }
 
                 const btn = document.getElementById('btn-confirm-tx');
                 if(o.Status.includes('SUCCESS')) {
