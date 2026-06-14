@@ -3,172 +3,585 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daster Tasbon - Premium Collection</title>
+    <title>Daster Tasbon | Premium Home Wear</title>
     <!-- Favicon -->
-    <link rel="icon" href="dtasbon.png" type="image/png">
+    <link rel="icon" href="dtasbon.png">
     <!-- Google Fonts -->
-    <link href="[https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
-    <!-- Tautan ke file CSS Terpisah -->
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* === CSS VARIABLES & RESET === */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --primary: #2d3436;
+            --primary-hover: #000000;
+            --accent: #0984e3;
+            --success: #00b894;
+            --danger: #d63031;
+            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === UTILITIES (GLASSMORPHISM) === */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .input-glass {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            margin-bottom: 15px;
+            transition: border 0.3s;
+        }
+
+        .input-glass:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .hidden { display: none !important; }
+
+        /* === LAYOUT & HEADER === */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo-container img {
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .logo-container h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        main {
+            padding-top: 90px;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* === CUSTOMER VIEW === */
+        .category-chips {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px 5%;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+        }
+        .category-chips::-webkit-scrollbar { display: none; }
+
+        .chip {
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .chip.active, .chip:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 0 5% 50px;
+        }
+
+        .product-card {
+            cursor: pointer;
+            text-align: center;
+        }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.05);
+        }
+        .product-title { font-size: 18px; font-weight: 600; margin-bottom: 5px; }
+        .product-price { color: var(--text-light); font-weight: 500; }
+
+        /* === MODALS (Cart, Payment, etc) === */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        @media (min-width: 768px) {
+            .modal-content.row-modal { flex-direction: row; }
+            .modal-half { width: 50%; padding: 30px; }
+        }
+        .modal-half { padding: 20px; }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+        }
+
+        /* Cart Specific */
+        .cart-img { width: 100%; height: 300px; object-fit: cover; border-radius: 12px; }
+        .qty-controls { display: flex; align-items: center; gap: 15px; margin: 20px 0; }
+        .qty-btn { width: 35px; height: 35px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 18px; cursor: pointer; }
+        
+        .radio-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .radio-label {
+            flex: 1; text-align: center; padding: 10px; border: 1px solid #ccc;
+            border-radius: 8px; cursor: pointer; font-size: 14px;
+        }
+        .radio-label input { display: none; }
+        .radio-label input:checked + span { font-weight: bold; color: var(--primary); }
+        .radio-label:has(input:checked) { border-color: var(--primary); background: rgba(0,0,0,0.05); }
+
+        .summary-box { background: rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; margin: 20px 0; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .summary-row.total { font-weight: bold; font-size: 18px; border-top: 1px solid #ccc; padding-top: 8px; }
+
+        /* Payment Specific */
+        .qr-container { text-align: center; margin: 20px 0; }
+        .qr-container img { max-width: 200px; border-radius: 10px; }
+        
+        /* === ADMIN DASHBOARD === */
+        .admin-layout {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            padding: 20px;
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        @media (max-width: 768px) {
+            .admin-sidebar { display: none; /* simple mobile handling */ }
+        }
+
+        .sidebar-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .sidebar-item:hover, .sidebar-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .dash-card { text-align: center; }
+        .dash-card h3 { font-size: 14px; color: var(--text-light); }
+        .dash-card p { font-size: 24px; font-weight: 700; margin-top: 10px; }
+
+        /* Tables */
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        th { background: rgba(0,0,0,0.05); font-weight: 600; }
+        
+        /* Simple Loading & Toast */
+        #loader {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.8); z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 20px; font-weight: bold;
+        }
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--primary); color: white;
+            padding: 15px 25px; border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 3000; transition: 0.3s;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Toast Notification Container -->
-    <div id="toast-container" class="toast-container"></div>
+    <!-- GLOBAL LOADER -->
+    <div id="loader" class="hidden">Memproses...</div>
+    <div id="toast" class="toast hidden">Pesan disini</div>
 
-    <!-- Global Loading Overlay -->
-    <div id="loading-overlay">
-        <div class="spinner"></div>
-        <p style="margin-top: 15px; font-weight: 500;" id="loading-text">Memuat Data...</p>
-    </div>
+    <!-- HEADER -->
+    <header class="glass">
+        <div class="logo-container" onclick="App.navigate('home')">
+            <img src="dtasbon.png" alt="Daster Tasbon Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkRUPC90ZXh0Pjwvc3ZnPg=='">
+            <h1>Daster Tasbon</h1>
+        </div>
+        <button class="btn btn-outline" id="nav-admin-btn" onclick="App.navigate('login')">Admin Login</button>
+        <button class="btn btn-outline hidden" id="nav-logout-btn" onclick="App.logout()">Logout</button>
+    </header>
 
-    <div id="app" class="container" style="display:none;">
-        
-        <!-- HEADER -->
-        <header class="glass">
-            <div class="logo">
-                <img src="dtasbon.png" alt="Daster Tasbon Logo" onerror="this.src='[https://ui-avatars.com/api/?name=DT&background=000&color=fff](https://ui-avatars.com/api/?name=DT&background=000&color=fff)'">
-                <span>Daster Tasbon</span>
-            </div>
-            <div>
-                <button class="btn btn-outline" id="btn-toggle-admin" onclick="toggleAdminLogin()">Admin ERP</button>
-                <button class="btn btn-outline hidden" id="btn-logout" onclick="logoutAdmin()">Logout</button>
-            </div>
-        </header>
-
-        <!-- CUSTOMER VIEW -->
-        <main id="customer-view">
-            <h2>I'm looking for</h2>
-            <p style="color: var(--text-gray); margin-bottom: 20px;">Premium collection</p>
-            
+    <main>
+        <!-- ================= VIEW: HOME (CUSTOMER) ================= -->
+        <section id="view-home">
             <div class="category-chips" id="category-container">
-                <!-- Injected via JS -->
+                <!-- Categories rendered here -->
             </div>
-
-            <div class="product-grid" id="product-container">
-                <!-- Injected via JS -->
+            <div class="product-grid" id="product-grid">
+                <!-- Products rendered here -->
             </div>
-        </main>
+        </section>
 
-        <!-- ADMIN LOGIN VIEW -->
-        <main id="login-view" class="hidden" style="max-width: 400px; margin: 50px auto;">
-            <div class="glass" style="padding: 30px;">
-                <h2 style="margin-bottom: 20px; text-align: center;">System Login</h2>
-                <input type="text" id="admin-user" class="input-glass" placeholder="Username (dastertasbon)">
-                <input type="password" id="admin-pass" class="input-glass" placeholder="Password (tasbon12)">
-                <button class="btn btn-dark" style="width: 100%;" onclick="processLogin()">Login to ERP</button>
+        <!-- ================= VIEW: ADMIN LOGIN ================= -->
+        <section id="view-login" class="hidden" style="display:flex; justify-content:center; align-items:center; min-height:60vh;">
+            <div class="glass-card" style="width: 100%; max-width: 400px;">
+                <h2 style="margin-bottom: 20px; text-align: center;">ERP Login</h2>
+                <input type="text" id="login-user" class="input-glass" placeholder="Username">
+                <input type="password" id="login-pass" class="input-glass" placeholder="Password">
+                <button class="btn btn-primary" style="width: 100%;" onclick="App.login()">Login</button>
             </div>
-        </main>
+        </section>
 
-        <!-- ADMIN DASHBOARD VIEW -->
-        <main id="admin-view" class="hidden">
-            <div class="admin-layout">
-                <!-- Sidebar -->
-                <aside class="sidebar glass">
-                    <div class="nav-item active" onclick="switchAdminTab('overview')">📊 Overview</div>
-                    <div class="nav-item" onclick="switchAdminTab('cashier')">🛒 Cashier (POS)</div>
-                    <div class="nav-item" onclick="switchAdminTab('catalog')">📦 Catalog Product</div>
-                    <div class="nav-item" onclick="switchAdminTab('transactions')">🧾 History Orders</div>
-                    <div class="nav-item" onclick="switchAdminTab('finance')">💰 Finance Report</div>
-                    <div class="nav-item" onclick="switchAdminTab('settings')">⚙️ Settings</div>
-                </aside>
+        <!-- ================= VIEW: ADMIN DASHBOARD ================= -->
+        <section id="view-admin" class="hidden">
+            <div class="admin-layout glass">
+                <div class="admin-sidebar glass">
+                    <div class="sidebar-item active" onclick="App.adminNav('overview')">Overview</div>
+                    <div class="sidebar-item" onclick="App.adminNav('cashier')">Cashier (POS)</div>
+                    <div class="sidebar-item" onclick="App.adminNav('catalog')">Catalog Product</div>
+                    <div class="sidebar-item" onclick="App.adminNav('transactions')">Transactions</div>
+                    <div class="sidebar-item" onclick="App.adminNav('finance')">Finance</div>
+                    <div class="sidebar-item" onclick="App.adminNav('settings')">Settings</div>
+                </div>
+                
+                <div class="admin-content">
+                    <!-- ADMIN: OVERVIEW -->
+                    <div id="admin-overview">
+                        <h2>Dashboard Overview</h2>
+                        <div class="dashboard-cards" style="margin-top:20px;">
+                            <div class="glass-card dash-card">
+                                <h3>Penjualan Hari Ini</h3>
+                                <p id="dash-sales">Rp 0</p>
+                            </div>
+                            <div class="glass-card dash-card">
+                                <h3>Total Pesanan</h3>
+                                <p id="dash-orders">0</p>
+                            </div>
+                            <div class="glass-card dash-card">
+                                <h3>Sisa Stok Global</h3>
+                                <p id="dash-stock">0</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- Content Area -->
-                <section class="admin-content glass" id="admin-content-area">
-                    <!-- Injected via JS -->
-                </section>
+                    <!-- ADMIN: CASHIER -->
+                    <div id="admin-cashier" class="hidden">
+                        <h2>Kasir Offline (POS)</h2>
+                        <div class="glass-card" style="max-width: 500px; margin-top:20px;">
+                            <input type="text" id="pos-name" class="input-glass" placeholder="Nama Customer">
+                            <select id="pos-product" class="input-glass" onchange="App.posSelectProduct()">
+                                <option value="">Pilih Produk...</option>
+                            </select>
+                            <p style="font-size: 12px; margin-top:-10px; margin-bottom:10px; color:var(--text-light)" id="pos-stock-info">Stok: -</p>
+                            
+                            <div style="display:flex; gap:10px;">
+                                <input type="number" id="pos-qty" class="input-glass" placeholder="QTY" value="1" min="1" onchange="App.posCalc()">
+                                <input type="text" id="pos-price" class="input-glass" placeholder="Total Harga" readonly style="background: rgba(0,0,0,0.05)">
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%" onclick="App.processPOS()">Proses Pembayaran</button>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN: CATALOG -->
+                    <div id="admin-catalog" class="hidden">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h2>Katalog Produk</h2>
+                            <button class="btn btn-primary" onclick="App.openProductModal()">+ Add New Product</button>
+                        </div>
+                        <div class="table-responsive glass-card" style="margin-top:20px; padding:0;">
+                            <table id="catalog-table">
+                                <thead>
+                                    <tr>
+                                        <th>Foto</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN: TRANSACTIONS -->
+                    <div id="admin-transactions" class="hidden">
+                        <h2>Riwayat Transaksi</h2>
+                        <div class="table-responsive glass-card" style="margin-top:20px; padding:0;">
+                            <table id="tx-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID Order</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN: FINANCE -->
+                    <div id="admin-finance" class="hidden">
+                        <h2>Laporan Keuangan</h2>
+                        <div class="dashboard-cards" style="margin-top:20px;">
+                            <div class="glass-card dash-card">
+                                <h3>Pendapatan Kotor</h3>
+                                <p id="fin-gross">Rp 0</p>
+                            </div>
+                            <div class="glass-card dash-card">
+                                <h3>Total HPP (Modal)</h3>
+                                <p id="fin-cogs" style="color:var(--danger)">Rp 0</p>
+                            </div>
+                            <div class="glass-card dash-card">
+                                <h3>Laba Bersih</h3>
+                                <p id="fin-net" style="color:var(--success)">Rp 0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN: SETTINGS -->
+                    <div id="admin-settings" class="hidden">
+                        <h2>Pengaturan Sistem</h2>
+                        <div class="glass-card" style="max-width: 500px; margin-top:20px;">
+                            <label>Link Pembayaran QRIS</label>
+                            <input type="text" id="set-qris" class="input-glass" placeholder="https://...">
+                            <label>No. Rekening BCA</label>
+                            <input type="text" id="set-bca" class="input-glass" placeholder="0123456789">
+                            <label>No. Rekening BNI</label>
+                            <input type="text" id="set-bni" class="input-glass" placeholder="0123456789">
+                            <button class="btn btn-primary" onclick="App.saveSettings()">Simpan Pengaturan</button>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </main>
+        </section>
+    </main>
 
-    </div>
-
-    <!-- MODALS -->
-
-    <!-- My Cart Modal -->
-    <div class="modal-overlay" id="modal-cart">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('modal-cart')">&times;</button>
-            <h2 style="margin-bottom: 20px; text-align: center;">My Cart</h2>
+    <!-- ================= MODALS ================= -->
+    
+    <!-- CART / CHECKOUT MODAL -->
+    <div id="modal-cart" class="modal-overlay hidden">
+        <div class="modal-content row-modal glass">
+            <button class="modal-close" onclick="App.closeModal('modal-cart')">&times;</button>
             
-            <div class="cart-grid">
-                <!-- Left: Product Info -->
-                <div id="cart-product-details"></div>
+            <!-- Left: Product Info -->
+            <div class="modal-half" style="border-right: 1px solid var(--glass-border);">
+                <img id="cart-img" src="" alt="Product" class="cart-img">
+                <h2 id="cart-title" style="margin-top:15px;">Nama Produk</h2>
+                <h3 id="cart-price" style="color:var(--primary); margin: 5px 0;">Rp 0</h3>
+                <p style="font-size:13px; color:var(--text-light);">⭐ 4.9/5 | Terjual: <span id="cart-sold">0</span></p>
+                <p id="cart-desc" style="margin-top:15px; font-size:14px; line-height:1.6;">Deskripsi...</p>
+                
+                <div class="qty-controls">
+                    <span>Jumlah:</span>
+                    <button class="qty-btn" onclick="App.updateQty(-1)">-</button>
+                    <span id="cart-qty" style="font-size:18px; font-weight:bold; min-width:20px; text-align:center;">1</span>
+                    <button class="qty-btn" onclick="App.updateQty(1)">+</button>
+                </div>
+            </div>
 
-                <!-- Right: Form & Summary -->
-                <div>
-                    <h3 style="margin-bottom: 15px;">Delivery Details</h3>
-                    <input type="text" id="cust-name" class="input-glass" placeholder="Nama Lengkap">
-                    <input type="text" id="cust-wa" class="input-glass" placeholder="Nomor WhatsApp">
-                    <input type="text" id="cust-address" class="input-glass" placeholder="Alamat Lengkap">
-                    <input type="text" id="cust-zip" class="input-glass" placeholder="Kode Pos">
+            <!-- Right: Checkout Form -->
+            <div class="modal-half">
+                <h3>Delivery Details</h3>
+                <div style="margin-top:15px;">
+                    <input type="text" id="co-name" class="input-glass" placeholder="Nama Lengkap">
+                    <input type="text" id="co-wa" class="input-glass" placeholder="No WhatsApp">
                     
-                    <button class="btn btn-outline" style="width: 100%; margin-bottom: 15px; font-size: 0.9rem;" onclick="getLocation()">
-                        📍 Pin Live Location
-                    </button>
-                    <small id="location-status" style="display:block; margin-bottom: 15px; color: var(--success);"></small>
+                    <div style="display:flex; gap:10px; margin-bottom:15px;">
+                        <input type="text" id="co-postcode" class="input-glass" placeholder="Kode Pos" style="margin-bottom:0;">
+                        <button class="btn btn-outline" onclick="App.pinLocation()" style="white-space:nowrap;">📍 Pin Live Location</button>
+                    </div>
+                    <textarea id="co-address" class="input-glass" placeholder="Alamat Lengkap" rows="3"></textarea>
+                    
+                    <p id="loc-status" style="font-size:12px; color:var(--accent); margin-top:-10px; margin-bottom:15px;"></p>
 
-                    <p style="margin-bottom: 5px; font-weight: 500;">Pilih Pengantaran</p>
-                    <div class="shipping-options">
-                        <input type="radio" id="ship-jne" name="shipping" value="JNE" hidden checked>
-                        <label for="ship-jne">JNE</label>
-                        <input type="radio" id="ship-jnt" name="shipping" value="JNT" hidden>
-                        <label for="ship-jnt">JNT</label>
-                        <input type="radio" id="ship-sicepat" name="shipping" value="Sicepat" hidden>
-                        <label for="ship-sicepat">Sicepat</label>
+                    <h4>Opsi Pengiriman</h4>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="shipping" value="JNE" checked>
+                            <span>JNE</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="shipping" value="JNT">
+                            <span>JNT</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="shipping" value="SICEPAT">
+                            <span>SiCepat</span>
+                        </label>
                     </div>
 
                     <div class="summary-box">
                         <div class="summary-row">
-                            <span>Subtotal</span>
-                            <span id="cart-subtotal">Rp 0</span>
+                            <span>Subtotal Produk</span><span id="sum-subtotal">Rp 0</span>
                         </div>
-                        <div class="summary-row" id="ongkir-row" style="display: none;">
-                            <span>Ongkos Kirim (Makassar)</span>
-                            <span id="cart-ongkir">Rp 15.000</span>
+                        <div class="summary-row" id="row-shipping" style="display:none;">
+                            <span>Ongkos Kirim (Makassar)</span><span id="sum-shipping">Rp 15.000</span>
                         </div>
-                        <div class="summary-row summary-total">
-                            <span>Total Pembayaran</span>
-                            <span id="cart-total">Rp 0</span>
+                        <div class="summary-row total">
+                            <span>Total Pembayaran</span><span id="sum-total">Rp 0</span>
                         </div>
                     </div>
 
-                    <button class="btn btn-dark" style="width: 100%; margin-top: 20px;" onclick="openPaymentModal()">Checkout & Bayar ➔</button>
+                    <button class="btn btn-primary" style="width:100%; font-size:16px;" onclick="App.proceedToPayment()">Checkout & Bayar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Payment Modal -->
-    <div class="modal-overlay" id="modal-payment">
-        <div class="modal-content" style="max-width: 500px; text-align: center;">
-            <button class="close-btn" onclick="closeModal('modal-payment')">&times;</button>
-            <h2>Payment</h2>
-            <p style="color: var(--text-gray); margin-bottom: 20px;">Selesaikan pembayaran Anda</p>
-            
-            <h1 id="payment-amount" style="margin-bottom: 20px;">Rp 0</h1>
-            
-            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-                <button class="btn btn-outline" onclick="selectPayment('QRIS')">QRIS</button>
-                <button class="btn btn-outline" onclick="selectPayment('BCA')">BCA</button>
-                <button class="btn btn-outline" onclick="selectPayment('E-Wallet')">E-Wallet</button>
+    <!-- PAYMENT MODAL -->
+    <div id="modal-payment" class="modal-overlay hidden">
+        <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
+            <button class="modal-close" onclick="App.closeModal('modal-payment')">&times;</button>
+            <h2 style="text-align:center;">Pilih Pembayaran</h2>
+            <p style="text-align:center; color:var(--text-light); margin-bottom:20px;">Total: <strong id="pay-total-display">Rp 0</strong></p>
+
+            <select id="pay-method" class="input-glass" onchange="App.changePaymentMethod()">
+                <option value="QRIS">QRIS</option>
+                <option value="BCA">Transfer BCA</option>
+                <option value="BNI">Transfer BNI</option>
+                <option value="EWALLET">E-Wallet (Dana/OVO/ShopeePay)</option>
+            </select>
+
+            <div id="pay-instruction" class="glass-card" style="background: rgba(255,255,255,0.8); text-align:center;">
+                <!-- Dynamically filled -->
             </div>
 
-            <div id="payment-details-area" class="glass" style="padding: 20px; border-radius: 12px; margin-bottom: 20px; min-height: 200px; display:flex; align-items:center; justify-content:center; flex-direction:column;">
-                <p>Pilih metode pembayaran di atas.</p>
-            </div>
-
-            <button class="btn btn-dark" style="width: 100%;" id="btn-confirm-order" onclick="confirmCustomerOrder()">Konfirmasi Saya Sudah Bayar</button>
+            <button class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="App.confirmOrder()">Saya Sudah Bayar</button>
         </div>
     </div>
 
-    <!-- Admin Product Modal -->
-    <div class="modal-overlay" id="modal-admin-product">
-        <div class="modal-content" style="max-width: 600px;">
-            <button class="close-btn" onclick="closeModal('modal-admin-product')">&times;</button>
-            <h2 id="product-modal-title">Add/Edit Product</h2>
-            <div style="margin-top: 20px;">
+    <!-- ADMIN PRODUCT MODAL (Add/Edit) -->
+    <div id="modal-product" class="modal-overlay hidden">
+        <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
+            <button class="modal-close" onclick="App.closeModal('modal-product')">&times;</button>
+            <h2 id="prod-modal-title">Tambah Produk</h2>
+            
+            <div style="margin-top:20px;">
                 <input type="hidden" id="prod-id">
-                <input type="text" id="prod-name" class="input-glass" placeholder="Name Product">
+                <input type="text" id="prod-name" class="input-glass" placeholder="Nama Produk">
                 <select id="prod-cat" class="input-glass">
                     <option value="Daster Kartika">Daster Kartika</option>
                     <option value="Daster Elok">Daster Elok</option>
@@ -176,39 +589,653 @@
                     <option value="Daster Gajah Putih">Daster Gajah Putih</option>
                     <option value="Daster Dipakemama">Daster Dipakemama</option>
                 </select>
-                <textarea id="prod-desc" class="input-glass" placeholder="Description Product" rows="3"></textarea>
+                <textarea id="prod-desc" class="input-glass" placeholder="Deskripsi"></textarea>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <input type="number" id="prod-price" class="input-glass" placeholder="Price Jual (Rp)">
-                    <input type="number" id="prod-modal" class="input-glass" placeholder="Modal Per Satuan (Rp)">
+                <div style="display:flex; gap:10px;">
+                    <input type="number" id="prod-price" class="input-glass" placeholder="Harga Jual">
+                    <input type="number" id="prod-cogs" class="input-glass" placeholder="Modal/HPP">
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <input type="number" id="prod-stock" class="input-glass" placeholder="Stok">
+                    <input type="number" id="prod-sold" class="input-glass" placeholder="Terjual (opsional)">
                 </div>
                 
-                <input type="number" id="prod-stock" class="input-glass" placeholder="Stock Inventory">
+                <label style="font-size:12px; margin-bottom:5px; display:block;">Foto Produk (Kosongkan jika tidak diubah)</label>
+                <input type="file" id="prod-img" class="input-glass" accept="image/*">
                 
-                <p style="margin-bottom: 5px;">Media Product (Image)</p>
-                <!-- Image Preview -->
-                <div style="margin-bottom: 15px;">
-                    <img id="prod-preview-img" src="" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; display: none; background:#eee;">
-                </div>
-                <input type="file" id="prod-file" class="input-glass" accept="image/*" onchange="previewImage(event)">
-                
-                <button class="btn btn-dark" style="width: 100%; margin-top: 10px;" id="btn-save-product" onclick="saveProduct()">Simpan Data Produk</button>
+                <button class="btn btn-primary" style="width:100%;" onclick="App.saveProduct()">Simpan & Tampilkan</button>
             </div>
         </div>
     </div>
 
-    <!-- Admin Detail Order Modal -->
-    <div class="modal-overlay" id="modal-order-detail">
-        <div class="modal-content" style="max-width: 500px;">
-            <button class="close-btn" onclick="closeModal('modal-order-detail')">&times;</button>
-            <h2>Detail Transaksi</h2>
-            <div id="order-detail-content" style="margin: 20px 0; text-align: left; line-height: 1.6; background: rgba(0,0,0,0.02); padding: 20px; border-radius: 12px;">
-                <!-- Injected -->
+    <!-- ADMIN ORDER DETAIL MODAL -->
+    <div id="modal-order" class="modal-overlay hidden">
+        <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
+            <button class="modal-close" onclick="App.closeModal('modal-order')">&times;</button>
+            <h2>Detail Pesanan <span id="ord-id" style="font-size:14px; color:var(--text-light)"></span></h2>
+            
+            <div class="glass-card" style="margin-top:20px; font-size:14px; background:rgba(255,255,255,0.7)">
+                <p><strong>Customer:</strong> <span id="ord-name"></span></p>
+                <p><strong>WA:</strong> <span id="ord-wa"></span></p>
+                <p><strong>Alamat:</strong> <span id="ord-address"></span></p>
+                <hr style="margin:10px 0; border:0; border-top:1px solid #ccc;">
+                <p><strong>Produk:</strong> <span id="ord-product"></span> (x<span id="ord-qty"></span>)</p>
+                <p><strong>Pengiriman:</strong> <span id="ord-ship"></span></p>
+                <p><strong>Total:</strong> <span id="ord-total" style="font-weight:bold; color:var(--primary)"></span></p>
+                <p><strong>Status:</strong> <span id="ord-status" style="padding:3px 8px; border-radius:4px; background:var(--primary); color:white; font-size:11px;"></span></p>
             </div>
-            <button class="btn btn-dark" style="width: 100%;" id="btn-confirm-trx" onclick="confirmAdminTransaction()">✅ Verifikasi & Set SUCCESS</button>
+
+            <button id="btn-confirm-tx" class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="App.confirmTransaction()">Konfirmasi Transaksi (Set SUCCESS)</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // === KONFIGURASI ===
+        // Ganti URL ini dengan URL Web App dari deployment Code.gs Anda.
+        const API_URL = "https://script.google.com/macros/s/AKfycbw45o3mq7UYcuB8knNfdOr7mKLmwFM1sg_52DoircJFjXI4wX4DCE6hilyOd-0bA5mA/exec";
+
+        const CATEGORIES = ["Daster Kartika", "Daster Elok", "Daster Setcel", "Daster Gajah Putih", "Daster Dipakemama"];
+        
+        // Dummy Data sbg Fallback jika API blm siap
+        const DUMMY_PRODUCTS = [
+            { id: "P01", name: "Daster Kartika Premium", category: "Daster Kartika", price: 125000, cogs: 80000, stock: 50, sold: 120, desc: "Bahan rayon premium, sangat adem dan nyaman dipakai.", img: "https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?auto=format&fit=crop&w=400&q=80" },
+            { id: "P02", name: "Daster Elok Floral", category: "Daster Elok", price: 110000, cogs: 75000, stock: 30, sold: 85, desc: "Motif bunga elegan.", img: "https://images.unsplash.com/photo-1515347619362-71683e913a85?auto=format&fit=crop&w=400&q=80" },
+            { id: "P03", name: "Setcel Rayon Basic", category: "Daster Setcel", price: 150000, cogs: 100000, stock: 20, sold: 200, desc: "Setelan celana nyaman.", img: "https://images.unsplash.com/photo-1434389678232-04ce6c5da41d?auto=format&fit=crop&w=400&q=80" }
+        ];
+
+        // === STATE MANAGEMENT ===
+        const App = {
+            state: {
+                view: 'home', // home, login, admin
+                adminTab: 'overview',
+                category: CATEGORIES[0],
+                products: [...DUMMY_PRODUCTS], // init with dummy
+                orders: [],
+                settings: { qris: '', bca: '1234567890', bni: '0987654321' },
+                
+                // Cart State
+                cartItem: null,
+                cartQty: 1,
+                isMakassar: false,
+                shippingCost: 15000,
+                
+                // Order Processing
+                currentOrderTotal: 0,
+                selectedOrderForAdmin: null
+            },
+
+            // --- INIT & UTILS ---
+            init() {
+                App.renderCategories();
+                App.renderProducts();
+                App.fetchData(); // Attempt fetch real data
+            },
+
+            showLoader(show = true) {
+                document.getElementById('loader').classList.toggle('hidden', !show);
+            },
+
+            showToast(msg) {
+                const toast = document.getElementById('toast');
+                toast.innerText = msg;
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 3000);
+            },
+
+            formatRp(angka) {
+                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+            },
+
+            generateId(prefix) {
+                return prefix + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+            },
+
+            // --- NAVIGATION ---
+            navigate(view) {
+                document.getElementById('view-home').classList.add('hidden');
+                document.getElementById('view-login').classList.add('hidden');
+                document.getElementById('view-admin').classList.add('hidden');
+                document.getElementById('nav-admin-btn').classList.add('hidden');
+                document.getElementById('nav-logout-btn').classList.add('hidden');
+
+                App.state.view = view;
+                if(view === 'home') {
+                    document.getElementById('view-home').classList.remove('hidden');
+                    document.getElementById('nav-admin-btn').classList.remove('hidden');
+                    App.renderProducts();
+                } else if(view === 'login') {
+                    document.getElementById('view-login').classList.remove('hidden');
+                } else if(view === 'admin') {
+                    document.getElementById('view-admin').classList.remove('hidden');
+                    document.getElementById('nav-logout-btn').classList.remove('hidden');
+                    App.adminNav('overview');
+                }
+            },
+
+            login() {
+                const u = document.getElementById('login-user').value;
+                const p = document.getElementById('login-pass').value;
+                if(u === 'dastertasbon' && p === 'tasbon12') {
+                    App.showToast("Login Berhasil");
+                    App.navigate('admin');
+                } else {
+                    App.showToast("Username/Password salah");
+                }
+            },
+
+            logout() {
+                App.navigate('home');
+                document.getElementById('login-user').value = '';
+                document.getElementById('login-pass').value = '';
+            },
+
+            // --- API FETCH (Mock-ready) ---
+            async apiCall(payload) {
+                try {
+                    // Because of CORS and GAS mechanics, we use POST with plain text body (JSON.stringify)
+                    const res = await fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+                    return await res.json();
+                } catch(e) {
+                    console.error("API Error (Using local state):", e);
+                    // Return mock response to prevent breaking UI
+                    return { status: "error", message: "API Failed, using local state" };
+                }
+            },
+
+            async fetchData() {
+                App.showLoader(true);
+                // Attempt to get all data
+                const res = await App.apiCall({ action: "getData" });
+                if(res && res.status === "success") {
+                    if(res.products.length > 0) App.state.products = res.products;
+                    if(res.orders) App.state.orders = res.orders;
+                    if(res.settings) App.state.settings = res.settings;
+                    App.renderProducts();
+                }
+                App.showLoader(false);
+            },
+
+            // --- CUSTOMER HOME ---
+            renderCategories() {
+                const container = document.getElementById('category-container');
+                container.innerHTML = CATEGORIES.map(cat => `
+                    <div class="chip ${App.state.category === cat ? 'active' : ''}" 
+                         onclick="App.setCategory('${cat}')">${cat}</div>
+                `).join('');
+            },
+
+            setCategory(cat) {
+                App.state.category = cat;
+                App.renderCategories();
+                App.renderProducts();
+            },
+
+            renderProducts() {
+                const grid = document.getElementById('product-grid');
+                const filtered = App.state.products.filter(p => p.category === App.state.category);
+                
+                if(filtered.length === 0) {
+                    grid.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color:var(--text-light);">Belum ada produk di kategori ini.</p>`;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map(p => `
+                    <div class="glass-card product-card" onclick="App.openCart('${p.id}')">
+                        <img src="${p.img || 'dtasbon.png'}" class="product-image" alt="${p.name}">
+                        <h3 class="product-title">${p.name}</h3>
+                        <p class="product-price">${App.formatRp(p.price)}</p>
+                    </div>
+                `).join('');
+            },
+
+            // --- CART & CHECKOUT ---
+            openCart(productId) {
+                const product = App.state.products.find(p => p.id === productId);
+                if(!product) return;
+                
+                App.state.cartItem = product;
+                App.state.cartQty = 1;
+                
+                document.getElementById('cart-img').src = product.img || 'dtasbon.png';
+                document.getElementById('cart-title').innerText = product.name;
+                document.getElementById('cart-price').innerText = App.formatRp(product.price);
+                document.getElementById('cart-sold').innerText = product.sold || 0;
+                document.getElementById('cart-desc').innerText = product.desc || "Tidak ada deskripsi.";
+                
+                App.updateQty(0); // refresh calc
+                
+                // Reset form
+                document.getElementById('co-name').value = '';
+                document.getElementById('co-wa').value = '';
+                document.getElementById('co-address').value = '';
+                document.getElementById('co-postcode').value = '';
+                App.state.isMakassar = false;
+                document.getElementById('row-shipping').style.display = 'none';
+                document.getElementById('loc-status').innerText = '';
+
+                document.getElementById('modal-cart').classList.remove('hidden');
+            },
+
+            updateQty(delta) {
+                let newQty = App.state.cartQty + delta;
+                if(newQty < 1) newQty = 1;
+                if(newQty > App.state.cartItem.stock) {
+                    App.showToast("Stok tidak mencukupi!");
+                    return;
+                }
+                App.state.cartQty = newQty;
+                document.getElementById('cart-qty').innerText = newQty;
+                App.calcCartTotal();
+            },
+
+            calcCartTotal() {
+                const subtotal = App.state.cartItem.price * App.state.cartQty;
+                document.getElementById('sum-subtotal').innerText = App.formatRp(subtotal);
+                
+                let total = subtotal;
+                if(App.state.isMakassar) {
+                    document.getElementById('row-shipping').style.display = 'flex';
+                    total += App.state.shippingCost;
+                } else {
+                    document.getElementById('row-shipping').style.display = 'none';
+                }
+                
+                App.state.currentOrderTotal = total;
+                document.getElementById('sum-total').innerText = App.formatRp(total);
+            },
+
+            pinLocation() {
+                if(navigator.geolocation) {
+                    App.showToast("Mengambil lokasi...");
+                    navigator.geolocation.getCurrentPosition(pos => {
+                        // Dummy Logic: Jika klik pin location, asumsikan di Makassar untuk testing.
+                        // Di real case, butuh Reverse Geocoding API.
+                        App.state.isMakassar = true;
+                        document.getElementById('loc-status').innerText = "Lokasi terdeteksi: Area Makassar (Ongkir diaplikasikan)";
+                        App.calcCartTotal();
+                    }, err => {
+                        App.showToast("Gagal mendapat lokasi. Silakan isi manual.");
+                    });
+                } else {
+                    App.showToast("Geolocation tidak didukung browser ini.");
+                }
+            },
+
+            proceedToPayment() {
+                const name = document.getElementById('co-name').value;
+                const wa = document.getElementById('co-wa').value;
+                const address = document.getElementById('co-address').value;
+                
+                if(!name || !wa || !address) {
+                    App.showToast("Lengkapi form pengiriman!");
+                    return;
+                }
+
+                document.getElementById('modal-cart').classList.add('hidden');
+                document.getElementById('pay-total-display').innerText = App.formatRp(App.state.currentOrderTotal);
+                App.changePaymentMethod(); // render default
+                document.getElementById('modal-payment').classList.remove('hidden');
+            },
+
+            changePaymentMethod() {
+                const method = document.getElementById('pay-method').value;
+                const inst = document.getElementById('pay-instruction');
+                
+                if(method === 'QRIS') {
+                    // Generate Dummy QRIS using api.qrserver
+                    const qrData = `QRIS_DASTERTASBON_${App.state.currentOrderTotal}`;
+                    inst.innerHTML = `
+                        <div class="qr-container">
+                            <p style="margin-bottom:10px;">Scan QRIS di bawah ini:</p>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrData)}" alt="QRIS">
+                        </div>
+                    `;
+                } else if(method === 'BCA') {
+                    inst.innerHTML = `<div style="padding:20px;"><h3>BCA</h3><p style="font-size:24px; font-weight:bold; letter-spacing:2px; margin:10px 0;">${App.state.settings.bca}</p><p>a.n Daster Tasbon</p></div>`;
+                } else if(method === 'BNI') {
+                    inst.innerHTML = `<div style="padding:20px;"><h3>BNI</h3><p style="font-size:24px; font-weight:bold; letter-spacing:2px; margin:10px 0;">${App.state.settings.bni}</p><p>a.n Daster Tasbon</p></div>`;
+                } else {
+                    inst.innerHTML = `<div style="padding:20px;"><h3>E-Wallet</h3><p>Transfer ke No. WA: <strong>0812-XXXX-XXXX</strong></p><p>(Dana / OVO / ShopeePay)</p></div>`;
+                }
+            },
+
+            async confirmOrder() {
+                App.showLoader(true);
+                
+                const method = document.getElementById('pay-method').value;
+                const orderData = {
+                    id: App.generateId("ORD-"),
+                    date: new Date().toLocaleString(),
+                    name: document.getElementById('co-name').value,
+                    wa: document.getElementById('co-wa').value,
+                    address: document.getElementById('co-address').value,
+                    productId: App.state.cartItem.id,
+                    productName: App.state.cartItem.name,
+                    qty: App.state.cartQty,
+                    total: App.state.currentOrderTotal,
+                    cogsTotal: App.state.cartItem.cogs * App.state.cartQty, // For finance
+                    shippingMethod: document.querySelector('input[name="shipping"]:checked').value,
+                    paymentMethod: method,
+                    status: "PENDING_" + method
+                };
+
+                // Save to state
+                App.state.orders.push(orderData);
+                
+                // Reduce stock locally
+                const prod = App.state.products.find(p => p.id === App.state.cartItem.id);
+                if(prod) prod.stock -= App.state.cartQty;
+
+                // Sync API
+                await App.apiCall({ action: "addOrder", data: orderData });
+
+                App.showLoader(false);
+                App.closeModal('modal-payment');
+                App.showToast("Pesanan Berhasil Dibuat! Menunggu Konfirmasi Admin.");
+            },
+
+            // --- ADMIN ROUTING ---
+            adminNav(tab) {
+                App.state.adminTab = tab;
+                document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+                event.target.classList.add('active');
+
+                ['overview', 'cashier', 'catalog', 'transactions', 'finance', 'settings'].forEach(t => {
+                    document.getElementById('admin-' + t).classList.add('hidden');
+                });
+                document.getElementById('admin-' + tab).classList.remove('hidden');
+
+                // Exec specific logic
+                if(tab === 'overview') App.renderOverview();
+                if(tab === 'cashier') App.renderPOS();
+                if(tab === 'catalog') App.renderCatalog();
+                if(tab === 'transactions') App.renderTransactions();
+                if(tab === 'finance') App.renderFinance();
+                if(tab === 'settings') App.renderSettings();
+            },
+
+            // --- ADMIN OVERVIEW ---
+            renderOverview() {
+                // Sales today (simplified: all success)
+                const successOrders = App.state.orders.filter(o => o.status.includes('SUCCESS'));
+                const totalRev = successOrders.reduce((sum, o) => sum + o.total, 0);
+                const totalStock = App.state.products.reduce((sum, p) => sum + parseInt(p.stock), 0);
+
+                document.getElementById('dash-sales').innerText = App.formatRp(totalRev);
+                document.getElementById('dash-orders').innerText = App.state.orders.length;
+                document.getElementById('dash-stock').innerText = totalStock;
+            },
+
+            // --- ADMIN POS ---
+            renderPOS() {
+                const select = document.getElementById('pos-product');
+                select.innerHTML = '<option value="">Pilih Produk...</option>' + 
+                    App.state.products.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                document.getElementById('pos-name').value = '';
+                document.getElementById('pos-qty').value = 1;
+                document.getElementById('pos-price').value = '';
+                document.getElementById('pos-stock-info').innerText = 'Stok: -';
+            },
+
+            posSelectProduct() {
+                const id = document.getElementById('pos-product').value;
+                const p = App.state.products.find(x => x.id === id);
+                if(p) {
+                    document.getElementById('pos-stock-info').innerText = `Stok Tersedia: ${p.stock}`;
+                    App.posCalc();
+                }
+            },
+
+            posCalc() {
+                const id = document.getElementById('pos-product').value;
+                const qty = document.getElementById('pos-qty').value;
+                const p = App.state.products.find(x => x.id === id);
+                if(p) {
+                    document.getElementById('pos-price').value = App.formatRp(p.price * qty);
+                }
+            },
+
+            async processPOS() {
+                const name = document.getElementById('pos-name').value || "Offline Customer";
+                const id = document.getElementById('pos-product').value;
+                const qty = parseInt(document.getElementById('pos-qty').value);
+                
+                if(!id || qty < 1) return App.showToast("Pilih produk & QTY!");
+                
+                const p = App.state.products.find(x => x.id === id);
+                if(qty > p.stock) return App.showToast("Stok tidak cukup!");
+
+                App.showLoader(true);
+                
+                const orderData = {
+                    id: App.generateId("OFF-"),
+                    date: new Date().toLocaleString(),
+                    name: name,
+                    wa: "-", address: "Pembelian Langsung",
+                    productId: p.id, productName: p.name,
+                    qty: qty, total: p.price * qty, cogsTotal: p.cogs * qty,
+                    shippingMethod: "NONE", paymentMethod: "CASH",
+                    status: "SUCCESS_OFFLINE"
+                };
+
+                App.state.orders.push(orderData);
+                p.stock -= qty;
+
+                await App.apiCall({ action: "addOrder", data: orderData });
+                // Also update stock in API in real scenario
+                
+                App.showLoader(false);
+                App.showToast("Pembayaran Offline Berhasil!");
+                App.renderPOS();
+            },
+
+            // --- ADMIN CATALOG ---
+            renderCatalog() {
+                const tbody = document.querySelector('#catalog-table tbody');
+                tbody.innerHTML = App.state.products.map(p => `
+                    <tr>
+                        <td><img src="${p.img || 'dtasbon.png'}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;"></td>
+                        <td>${p.name}</td>
+                        <td>${p.category}</td>
+                        <td>${App.formatRp(p.price)}</td>
+                        <td>${p.stock}</td>
+                        <td>
+                            <button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="App.openProductModal('${p.id}')">Edit</button>
+                        </td>
+                    </tr>
+                `).join('');
+            },
+
+            openProductModal(id = null) {
+                document.getElementById('prod-id').value = '';
+                document.getElementById('prod-name').value = '';
+                document.getElementById('prod-desc').value = '';
+                document.getElementById('prod-price').value = '';
+                document.getElementById('prod-cogs').value = '';
+                document.getElementById('prod-stock').value = '';
+                document.getElementById('prod-sold').value = '0';
+                document.getElementById('prod-img').value = '';
+
+                if(id) {
+                    const p = App.state.products.find(x => x.id === id);
+                    if(p) {
+                        document.getElementById('prod-modal-title').innerText = "Edit Produk";
+                        document.getElementById('prod-id').value = p.id;
+                        document.getElementById('prod-name').value = p.name;
+                        document.getElementById('prod-cat').value = p.category;
+                        document.getElementById('prod-desc').value = p.desc;
+                        document.getElementById('prod-price').value = p.price;
+                        document.getElementById('prod-cogs').value = p.cogs;
+                        document.getElementById('prod-stock').value = p.stock;
+                        document.getElementById('prod-sold').value = p.sold || 0;
+                    }
+                } else {
+                    document.getElementById('prod-modal-title').innerText = "+ Tambah Produk";
+                }
+                document.getElementById('modal-product').classList.remove('hidden');
+            },
+
+            async saveProduct() {
+                App.showLoader(true);
+                const id = document.getElementById('prod-id').value || App.generateId("P");
+                const fileInput = document.getElementById('prod-img');
+                
+                let base64 = null;
+                let mimeType = null;
+                let filename = null;
+
+                if(fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    mimeType = file.type;
+                    filename = file.name;
+                    base64 = await new Promise((res) => {
+                        const reader = new FileReader();
+                        reader.onload = e => res(e.target.result.split(',')[1]);
+                        reader.readAsDataURL(file);
+                    });
+                }
+
+                const data = {
+                    id,
+                    name: document.getElementById('prod-name').value,
+                    category: document.getElementById('prod-cat').value,
+                    desc: document.getElementById('prod-desc').value,
+                    price: parseInt(document.getElementById('prod-price').value),
+                    cogs: parseInt(document.getElementById('prod-cogs').value),
+                    stock: parseInt(document.getElementById('prod-stock').value),
+                    sold: parseInt(document.getElementById('prod-sold').value)
+                };
+
+                // Save Localy
+                const existingIndex = App.state.products.findIndex(x => x.id === id);
+                if(existingIndex > -1) {
+                    // Update (preserve image if not changed)
+                    if(!base64) data.img = App.state.products[existingIndex].img;
+                    App.state.products[existingIndex] = { ...App.state.products[existingIndex], ...data };
+                } else {
+                    // Add
+                    App.state.products.push(data);
+                }
+
+                // Sync API
+                await App.apiCall({
+                    action: "saveProduct",
+                    data: data,
+                    image: base64 ? { base64, mimeType, filename } : null
+                });
+
+                App.showLoader(false);
+                App.closeModal('modal-product');
+                App.renderCatalog();
+                App.showToast("Produk tersimpan!");
+            },
+
+            // --- ADMIN TRANSACTIONS ---
+            renderTransactions() {
+                const tbody = document.querySelector('#tx-table tbody');
+                // reverse to show newest first
+                const list = [...App.state.orders].reverse();
+                tbody.innerHTML = list.map(o => `
+                    <tr>
+                        <td>${o.id}</td>
+                        <td>${o.date}</td>
+                        <td>${o.name}</td>
+                        <td>${App.formatRp(o.total)}</td>
+                        <td><span style="font-size:11px; padding:3px 8px; border-radius:4px; background:${o.status.includes('SUCCESS') ? 'var(--success)' : 'var(--danger)'}; color:white;">${o.status}</span></td>
+                        <td>
+                            <button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="App.openOrderModal('${o.id}')">Detail</button>
+                        </td>
+                    </tr>
+                `).join('');
+            },
+
+            openOrderModal(id) {
+                const o = App.state.orders.find(x => x.id === id);
+                if(!o) return;
+                App.state.selectedOrderForAdmin = o;
+                
+                document.getElementById('ord-id').innerText = "#" + o.id;
+                document.getElementById('ord-name').innerText = o.name;
+                document.getElementById('ord-wa').innerText = o.wa;
+                document.getElementById('ord-address').innerText = o.address;
+                document.getElementById('ord-product').innerText = o.productName;
+                document.getElementById('ord-qty').innerText = o.qty;
+                document.getElementById('ord-ship').innerText = o.shippingMethod;
+                document.getElementById('ord-total').innerText = App.formatRp(o.total);
+                document.getElementById('ord-status').innerText = o.status;
+
+                const btn = document.getElementById('btn-confirm-tx');
+                if(o.status.includes('SUCCESS')) {
+                    btn.style.display = 'none';
+                } else {
+                    btn.style.display = 'block';
+                }
+
+                document.getElementById('modal-order').classList.remove('hidden');
+            },
+
+            async confirmTransaction() {
+                const o = App.state.selectedOrderForAdmin;
+                if(!o) return;
+
+                App.showLoader(true);
+                o.status = "SUCCESS_CONFIRMED";
+                
+                await App.apiCall({ action: "updateOrder", id: o.id, status: o.status });
+
+                App.showLoader(false);
+                App.closeModal('modal-order');
+                App.renderTransactions();
+                App.showToast("Transaksi Berhasil Dikonfirmasi!");
+            },
+
+            // --- ADMIN FINANCE ---
+            renderFinance() {
+                const success = App.state.orders.filter(o => o.status.includes('SUCCESS'));
+                
+                const gross = success.reduce((sum, o) => sum + o.total, 0);
+                const cogs = success.reduce((sum, o) => sum + (o.cogsTotal || 0), 0);
+                const net = gross - cogs;
+
+                document.getElementById('fin-gross').innerText = App.formatRp(gross);
+                document.getElementById('fin-cogs').innerText = App.formatRp(cogs);
+                document.getElementById('fin-net').innerText = App.formatRp(net);
+            },
+
+            // --- ADMIN SETTINGS ---
+            renderSettings() {
+                document.getElementById('set-qris').value = App.state.settings.qris || '';
+                document.getElementById('set-bca').value = App.state.settings.bca || '';
+                document.getElementById('set-bni').value = App.state.settings.bni || '';
+            },
+
+            async saveSettings() {
+                App.showLoader(true);
+                const s = {
+                    qris: document.getElementById('set-qris').value,
+                    bca: document.getElementById('set-bca').value,
+                    bni: document.getElementById('set-bni').value
+                };
+                App.state.settings = s;
+
+                await App.apiCall({ action: "updateSettings", data: s });
+                
+                App.showLoader(false);
+                App.showToast("Pengaturan Disimpan!");
+            },
+
+            // --- GENERIC MODAL CLOSE ---
+            closeModal(id) {
+                document.getElementById(id).classList.add('hidden');
+            }
+        };
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', App.init);
+
+    </script>
 </body>
 </html>
