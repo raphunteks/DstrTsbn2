@@ -5,7 +5,7 @@
  */
 
 // Link Google Apps Script Anda (WAJIB DIPERBARUI DENGAN SCRIPT CODE.GS VERSI BARU DI BAWAH)
-const GAS_URL = "[https://script.google.com/macros/s/AKfycbw45o3mq7UYcuB8knNfdOr7mKLmwFM1sg_52DoircJFjXI4wX4DCE6hilyOd-0bA5mA/exec](https://script.google.com/macros/s/AKfycbw45o3mq7UYcuB8knNfdOr7mKLmwFM1sg_52DoircJFjXI4wX4DCE6hilyOd-0bA5mA/exec)";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbw45o3mq7UYcuB8knNfdOr7mKLmwFM1sg_52DoircJFjXI4wX4DCE6hilyOd-0bA5mA/exec";
 
 const state = {
     categories: ["Daster Kartika", "Daster Elok", "Daster Setcel", "Daster Gajah Putih", "Daster Dipakemama"],
