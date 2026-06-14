@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daster Tasbon - Premium Collection</title>
+    <!-- Favicon Dtasbon -->
+    <link rel="icon" href="dtasbon.png" type="image/png">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="app" class="container">
+        
+        <!-- HEADER -->
+        <header class="glass">
+            <div class="logo">
+                <img src="dtasbon.png" alt="Daster Tasbon Logo" onerror="this.src='https://ui-avatars.com/api/?name=DT&background=000&color=fff'">
+                <span>Daster Tasbon</span>
+            </div>
+            <div>
+                <button class="btn btn-outline" id="btn-toggle-admin" onclick="toggleAdminLogin()">Admin</button>
+                <button class="btn btn-outline hidden" id="btn-logout" onclick="logoutAdmin()">Logout</button>
+            </div>
+        </header>
+
+        <!-- CUSTOMER VIEW -->
+        <main id="customer-view">
+            <h2>I'm looking for</h2>
+            <p style="color: var(--text-gray); margin-bottom: 20px;">Premium collection</p>
+            
+            <div class="category-chips" id="category-container">
+                <!-- Injected via JS -->
+            </div>
+
+            <div class="product-grid" id="product-container">
+                <!-- Injected via JS -->
+            </div>
+        </main>
+
+        <!-- ADMIN LOGIN VIEW -->
+        <main id="login-view" class="hidden" style="max-width: 400px; margin: 50px auto;">
+            <div class="glass" style="padding: 30px;">
+                <h2 style="margin-bottom: 20px; text-align: center;">Admin Login</h2>
+                <input type="text" id="admin-user" class="input-glass" placeholder="Username">
+                <input type="password" id="admin-pass" class="input-glass" placeholder="Password">
+                <button class="btn btn-dark" style="width: 100%;" onclick="processLogin()">Login</button>
+            </div>
+        </main>
+
+        <!-- ADMIN DASHBOARD VIEW -->
+        <main id="admin-view" class="hidden">
+            <div class="admin-layout">
+                <!-- Sidebar -->
+                <aside class="sidebar glass">
+                    <div class="nav-item active" onclick="switchAdminTab('overview')">Overview</div>
+                    <div class="nav-item" onclick="switchAdminTab('cashier')">Cashier (Offline)</div>
+                    <div class="nav-item" onclick="switchAdminTab('catalog')">Catalog Product</div>
+                    <div class="nav-item" onclick="switchAdminTab('transactions')">History Transaction</div>
+                    <div class="nav-item" onclick="switchAdminTab('finance')">Laporan Keuangan</div>
+                    <div class="nav-item" onclick="switchAdminTab('settings')">Pengaturan</div>
+                </aside>
+
+                <!-- Content Area -->
+                <section class="admin-content glass" id="admin-content-area">
+                    <!-- Injected via JS -->
+                </section>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- My Cart Modal -->
+    <div class="modal-overlay" id="modal-cart">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal-cart')">&times;</button>
+            <h2 style="margin-bottom: 20px; text-align: center;">My Cart</h2>
+            
+            <div class="cart-grid">
+                <!-- Left: Product Info -->
+                <div id="cart-product-details">
+                    <!-- Injected -->
+                </div>
+
+                <!-- Right: Form & Summary -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">Delivery Details</h3>
+                    <input type="text" id="cust-name" class="input-glass" placeholder="Nama Lengkap">
+                    <input type="text" id="cust-wa" class="input-glass" placeholder="Nomor WhatsApp">
+                    <input type="text" id="cust-address" class="input-glass" placeholder="Alamat Lengkap">
+                    <input type="text" id="cust-zip" class="input-glass" placeholder="Kode Pos">
+                    
+                    <button class="btn btn-outline" style="width: 100%; margin-bottom: 15px; font-size: 0.9rem;" onclick="getLocation()">
+                        📍 Pin Live Location
+                    </button>
+                    <small id="location-status" style="display:block; margin-bottom: 15px; color: var(--success);"></small>
+
+                    <p style="margin-bottom: 5px; font-weight: 500;">Pilih Pengantaran</p>
+                    <div class="shipping-options">
+                        <input type="radio" id="ship-jne" name="shipping" value="JNE" hidden checked>
+                        <label for="ship-jne">JNE</label>
+                        <input type="radio" id="ship-jnt" name="shipping" value="JNT" hidden>
+                        <label for="ship-jnt">JNT</label>
+                        <input type="radio" id="ship-sicepat" name="shipping" value="Sicepat" hidden>
+                        <label for="ship-sicepat">Sicepat</label>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="cart-subtotal">Rp 0</span>
+                        </div>
+                        <div class="summary-row" id="ongkir-row" style="display: none;">
+                            <span>Ongkos Kirim (Makassar)</span>
+                            <span id="cart-ongkir">Rp 15.000</span>
+                        </div>
+                        <div class="summary-row summary-total">
+                            <span>Total Pembayaran</span>
+                            <span id="cart-total">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-dark" style="width: 100%; margin-top: 20px;" onclick="openPaymentModal()">Checkout & Bayar ➔</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="modal-payment">
+        <div class="modal-content" style="max-width: 500px; text-align: center;">
+            <button class="close-btn" onclick="closeModal('modal-payment')">&times;</button>
+            <h2>Payment</h2>
+            <p style="color: var(--text-gray); margin-bottom: 20px;">Selesaikan pembayaran Anda</p>
+            
+            <h1 id="payment-amount" style="margin-bottom: 20px;">Rp 0</h1>
+            
+            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                <button class="btn btn-outline" onclick="selectPayment('QRIS')">QRIS</button>
+                <button class="btn btn-outline" onclick="selectPayment('BCA')">BCA</button>
+                <button class="btn btn-outline" onclick="selectPayment('E-Wallet')">E-Wallet</button>
+            </div>
+
+            <div id="payment-details-area" class="glass" style="padding: 20px; border-radius: 12px; margin-bottom: 20px; min-height: 200px; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+                <p>Pilih metode pembayaran di atas.</p>
+            </div>
+
+            <button class="btn btn-dark" style="width: 100%;" onclick="confirmCustomerOrder()">Saya Sudah Bayar</button>
+        </div>
+    </div>
+
+    <!-- Admin Product Modal -->
+    <div class="modal-overlay" id="modal-admin-product">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="close-btn" onclick="closeModal('modal-admin-product')">&times;</button>
+            <h2 id="product-modal-title">Add/Edit Product</h2>
+            <div style="margin-top: 20px;">
+                <input type="hidden" id="prod-id">
+                <input type="text" id="prod-name" class="input-glass" placeholder="Name Product">
+                <select id="prod-cat" class="input-glass">
+                    <option value="Daster Kartika">Daster Kartika</option>
+                    <option value="Daster Elok">Daster Elok</option>
+                    <option value="Daster Setcel">Daster Setcel</option>
+                    <option value="Daster Gajah Putih">Daster Gajah Putih</option>
+                    <option value="Daster Dipakemama">Daster Dipakemama</option>
+                </select>
+                <textarea id="prod-desc" class="input-glass" placeholder="Description Product" rows="3"></textarea>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <input type="number" id="prod-price" class="input-glass" placeholder="Price Jual (Rp)">
+                    <input type="number" id="prod-modal" class="input-glass" placeholder="Modal Per Satuan (Rp)">
+                </div>
+                
+                <input type="number" id="prod-stock" class="input-glass" placeholder="Stock">
+                
+                <p style="margin-bottom: 5px;">Media Product (Image)</p>
+                <input type="file" id="prod-file" class="input-glass" accept="image/*">
+                
+                <button class="btn btn-dark" style="width: 100%; margin-top: 10px;" onclick="saveProduct()">Simpan & Tampilkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Detail Order Modal -->
+    <div class="modal-overlay" id="modal-order-detail">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="close-btn" onclick="closeModal('modal-order-detail')">&times;</button>
+            <h2>Detail Order</h2>
+            <div id="order-detail-content" style="margin: 20px 0; text-align: left; line-height: 1.6;">
+                <!-- Injected -->
+            </div>
+            <button class="btn btn-dark" style="width: 100%;" id="btn-confirm-trx" onclick="confirmAdminTransaction()">Confirmation Transaction (Set SUCCESS)</button>
+        </div>
+    </div>
+
+    <!-- Link to external JS -->
+    <script src="script.js"></script>
+</body>
+</html>
