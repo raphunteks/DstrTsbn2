@@ -253,27 +253,52 @@
         </div>
     </div>
 
+    <!-- UPGRADED PAYMENT MODAL -->
     <div id="modal-payment" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
             <button class="modal-close" onclick="App.closeModal('modal-payment')">&times;</button>
             <h2 style="text-align:center;">Pilih Pembayaran</h2>
-            <p style="text-align:center; color:var(--text-light); margin-bottom:20px;">Total: <strong id="pay-total-display">Rp 0</strong></p>
+            <p style="text-align:center; color:var(--text-light); margin-bottom:10px;">Total: <strong id="pay-total-display">Rp 0</strong></p>
 
-            <select id="pay-method" class="input-glass" onchange="App.changePaymentMethod()">
-                <option value="QRIS">Scan QRIS (M-Banking / E-Wallet)</option>
-                <option value="BCA">Transfer BCA</option>
-                <option value="BNI">Transfer BNI</option>
-                <option value="DANA">E-Wallet DANA</option>
-                <option value="OVO">E-Wallet OVO</option>
-                <option value="GOPAY">E-Wallet GoPay</option>
-                <option value="SHOPEEPAY">E-Wallet ShopeePay</option>
-            </select>
+            <!-- Hidden input to store the selected payment method -->
+            <input type="hidden" id="pay-method" value="QRIS">
 
-            <div id="pay-instruction" class="glass-card" style="background: rgba(255,255,255,0.8); text-align:center;">
+            <div class="payment-section">
+                <h4>E-Wallet & Instant Payment</h4>
+                <div class="payment-grid">
+                    <div class="pay-option active" onclick="App.selectPayment('QRIS')" id="opt-QRIS">
+                        <span style="font-weight:900; font-style:italic; font-size:16px;">QRIS</span>
+                    </div>
+                    <div class="pay-option" onclick="App.selectPayment('SHOPEEPAY')" id="opt-SHOPEEPAY">
+                        <span style="color:#ee4d2d; font-weight:800; font-size:16px;">Shopee</span><span style="font-weight:600; font-size:16px;">Pay</span>
+                    </div>
+                    <div class="pay-option" onclick="App.selectPayment('OVO')" id="opt-OVO">
+                        <span style="color:#4c3494; font-weight:900; letter-spacing:1px; font-size:16px;">OVO</span>
+                    </div>
+                    <div class="pay-option" onclick="App.selectPayment('DANA')" id="opt-DANA">
+                        <span style="color:#118ee9; font-weight:800; font-size:16px;">DANA</span>
+                    </div>
+                    <div class="pay-option" onclick="App.selectPayment('GOPAY')" id="opt-GOPAY">
+                        <span style="color:#00a5cf; font-weight:800; font-size:16px;">gopay</span>
+                    </div>
+                </div>
+
+                <h4>Virtual Account / Transfer Bank</h4>
+                <div class="payment-grid">
+                    <div class="pay-option" onclick="App.selectPayment('BCA')" id="opt-BCA">
+                        <span style="color:#004a98; font-weight:900; font-style:italic; font-size:18px;">BCA</span>
+                    </div>
+                    <div class="pay-option" onclick="App.selectPayment('BNI')" id="opt-BNI">
+                        <span style="color:#f15a23; font-weight:900; font-size:18px;">B</span><span style="color:#005e6a; font-weight:900; font-size:18px;">NI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pay-instruction" class="glass-card" style="background: rgba(255,255,255,0.8); text-align:center; margin-top:20px;">
                 <!-- Dynamically filled by JS -->
             </div>
 
-            <button class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="App.confirmOrder()">Saya Sudah Bayar</button>
+            <button class="btn btn-primary" style="width:100%; margin-top:20px; font-size:16px;" onclick="App.confirmOrder()">Confirm Method & Bayar</button>
         </div>
     </div>
 
@@ -607,6 +632,19 @@
                 }
             },
 
+            // --- UPGRADED: FUNGSI MEMILIH KOTAK PAYMENT ---
+            selectPayment(method) {
+                // Update hidden input
+                document.getElementById('pay-method').value = method;
+                
+                // Hilangkan state 'active' dari semua tombol, lalu aktifkan yang dipilih
+                document.querySelectorAll('.pay-option').forEach(el => el.classList.remove('active'));
+                document.getElementById('opt-' + method).classList.add('active');
+                
+                // Panggil render instruksi UI
+                App.changePaymentMethod();
+            },
+
             proceedToPayment() {
                 const name = document.getElementById('co-name').value;
                 const wa = document.getElementById('co-wa').value;
@@ -619,7 +657,10 @@
 
                 document.getElementById('modal-cart').classList.add('hidden');
                 document.getElementById('pay-total-display').innerText = App.formatRp(App.state.currentOrderTotal);
-                App.changePaymentMethod(); 
+                
+                // Memastikan pilihan default reset ke QRIS saat modal pembayaran dibuka
+                App.selectPayment('QRIS'); 
+                
                 document.getElementById('modal-payment').classList.remove('hidden');
             },
 
@@ -637,9 +678,9 @@
                         </div>
                     `;
                 } else if(method === 'BCA') {
-                    inst.innerHTML = `<div style="padding:20px;"><h3>BCA</h3><p style="font-size:20px; font-weight:bold; letter-spacing:2px; margin:10px 0;">${s.BCA || '-'}</p><p>a.n Daster Tasbon</p></div>`;
+                    inst.innerHTML = `<div style="padding:20px;"><h3>Transfer BCA</h3><p style="font-size:20px; font-weight:bold; letter-spacing:2px; margin:10px 0;">${s.BCA || '-'}</p><p>a.n Daster Tasbon</p></div>`;
                 } else if(method === 'BNI') {
-                    inst.innerHTML = `<div style="padding:20px;"><h3>BNI</h3><p style="font-size:20px; font-weight:bold; letter-spacing:2px; margin:10px 0;">${s.BNI || '-'}</p><p>a.n Daster Tasbon</p></div>`;
+                    inst.innerHTML = `<div style="padding:20px;"><h3>Transfer BNI</h3><p style="font-size:20px; font-weight:bold; letter-spacing:2px; margin:10px 0;">${s.BNI || '-'}</p><p>a.n Daster Tasbon</p></div>`;
                 } else if(method === 'DANA') {
                     inst.innerHTML = `<div style="padding:20px;"><h3>DANA</h3><p style="font-size:20px; font-weight:bold; letter-spacing:2px; color:#118ee9; margin:10px 0;">${s.EWALLET_DANA || '-'}</p><p>a.n Daster Tasbon</p></div>`;
                 } else if(method === 'OVO') {
