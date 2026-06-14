@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daster Tasbon | Premium Home Wear</title>
-    <!-- Favicon -->
     <link rel="icon" href="dtasbon.png">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,12 +24,8 @@
 
     <main>
         <section id="view-home">
-            <div class="category-chips" id="category-container">
-                <!-- Categories rendered here -->
-            </div>
-            <div class="product-grid" id="product-grid">
-                <!-- Products rendered here -->
-            </div>
+            <div class="category-chips" id="category-container"></div>
+            <div class="product-grid" id="product-grid"></div>
         </section>
 
         <section id="view-login" class="hidden" style="display:flex; justify-content:center; align-items:center; min-height:60vh;">
@@ -84,7 +76,6 @@
                                 <option value="">Pilih Produk...</option>
                             </select>
                             <p style="font-size: 12px; margin-top:-10px; margin-bottom:10px; color:var(--text-light)" id="pos-stock-info">Stok: -</p>
-                            
                             <div style="display:flex; gap:10px;">
                                 <input type="number" id="pos-qty" class="input-glass" placeholder="QTY" value="1" min="1" onchange="App.posCalc()">
                                 <input type="text" id="pos-price" class="input-glass" placeholder="Total Harga" readonly style="background: rgba(0,0,0,0.05)">
@@ -101,9 +92,7 @@
                         <div class="table-responsive glass-card" style="margin-top:20px; padding:0;">
                             <table id="catalog-table">
                                 <thead>
-                                    <tr>
-                                        <th>Foto</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th>
-                                    </tr>
+                                    <tr><th>Foto</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -115,9 +104,7 @@
                         <div class="table-responsive glass-card" style="margin-top:20px; padding:0;">
                             <table id="tx-table">
                                 <thead>
-                                    <tr>
-                                        <th>ID Order</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th>
-                                    </tr>
+                                    <tr><th>ID Order</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th></tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -144,9 +131,7 @@
 
                     <div id="admin-settings" class="hidden">
                         <h2>Pengaturan Sistem & Payment</h2>
-                        
                         <div class="settings-grid" style="margin-top:20px;">
-                            <!-- QRIS -->
                             <div class="glass-card setting-box">
                                 <label>Link Data QRIS</label>
                                 <input type="text" id="set-qris" class="input-glass" placeholder="https://api.qrserver.com/.../...">
@@ -155,7 +140,6 @@
                                     <input type="file" id="logo-qris" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
-                            <!-- BCA -->
                             <div class="glass-card setting-box">
                                 <label>Bank BCA</label>
                                 <input type="text" id="set-bca" class="input-glass" placeholder="BCA 1234567890">
@@ -164,7 +148,6 @@
                                     <input type="file" id="logo-bca" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
-                            <!-- BNI -->
                             <div class="glass-card setting-box">
                                 <label>Bank BNI</label>
                                 <input type="text" id="set-bni" class="input-glass" placeholder="BNI 1234567890">
@@ -173,7 +156,6 @@
                                     <input type="file" id="logo-bni" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
-                            <!-- DANA -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet DANA</label>
                                 <input type="text" id="set-dana" class="input-glass" placeholder="081xxx (DANA)">
@@ -182,7 +164,6 @@
                                     <input type="file" id="logo-dana" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
-                            <!-- OVO -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet OVO</label>
                                 <input type="text" id="set-ovo" class="input-glass" placeholder="081xxx (OVO)">
@@ -191,7 +172,6 @@
                                     <input type="file" id="logo-ovo" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
-                            <!-- GOPAY -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet GoPay</label>
                                 <input type="text" id="set-gopay" class="input-glass" placeholder="081xxx (GoPay)">
@@ -200,7 +180,6 @@
                                     <input type="file" id="logo-gopay" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
-                            <!-- SHOPEEPAY -->
                             <div class="glass-card setting-box">
                                 <label>E-Wallet ShopeePay</label>
                                 <input type="text" id="set-shopeepay" class="input-glass" placeholder="081xxx (ShopeePay)">
@@ -210,28 +189,39 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <button class="btn btn-primary" style="width:100%; margin-top:20px; font-size:16px;" onclick="App.saveSettings()">Upload Logo & Simpan Pengaturan</button>
                     </div>
-
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- UPGRADED MODAL CART (SLIDER & SCROLLABLE DESC) -->
     <div id="modal-cart" class="modal-overlay hidden">
         <div class="modal-content row-modal glass">
             <button class="modal-close" onclick="App.closeModal('modal-cart')">&times;</button>
             
             <!-- Left: Product Info -->
-            <div class="modal-half" style="border-right: 1px solid var(--glass-border);">
-                <img id="cart-img" src="" alt="Product" class="cart-img">
+            <div class="modal-half" style="border-right: 1px solid var(--glass-border); display: flex; flex-direction: column;">
+                
+                <!-- IMAGE SLIDER WRAPPER (1:1 SQUARE) -->
+                <div class="slider-wrapper">
+                    <button class="slider-btn left" onclick="App.slideImage(-1)">&#10094;</button>
+                    <img id="cart-img" src="" alt="Product" class="cart-img-square">
+                    <button class="slider-btn right" onclick="App.slideImage(1)">&#10095;</button>
+                    <div id="slider-dots" class="slider-dots"></div>
+                </div>
+
                 <h2 id="cart-title" style="margin-top:15px;">Nama Produk</h2>
                 <h3 id="cart-price" style="color:var(--primary); margin: 5px 0;">Rp 0</h3>
                 <p style="font-size:13px; color:var(--text-light);">⭐ 4.9/5 | Terjual: <span id="cart-sold">0</span></p>
-                <p id="cart-desc" style="margin-top:15px; font-size:14px; line-height:1.6;">Deskripsi...</p>
                 
-                <div class="qty-controls">
+                <!-- SCROLLABLE DESCRIPTION -->
+                <div class="scrollable-desc">
+                    <p id="cart-desc" style="font-size:14px; line-height:1.6; padding-right:10px;">Deskripsi...</p>
+                </div>
+                
+                <div class="qty-controls" style="margin-top: auto; padding-top: 15px;">
                     <span>Jumlah:</span>
                     <button class="qty-btn" onclick="App.updateQty(-1)">-</button>
                     <span id="cart-qty" style="font-size:18px; font-weight:bold; min-width:20px; text-align:center;">1</span>
@@ -291,14 +281,13 @@
         </div>
     </div>
 
-    <!-- UPGRADED PAYMENT MODAL (DYNAMIC LOGO) -->
+    <!-- PAYMENT MODAL -->
     <div id="modal-payment" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
             <button class="modal-close" onclick="App.closeModal('modal-payment')">&times;</button>
             <h2 style="text-align:center;">Pilih Pembayaran</h2>
             <p style="text-align:center; color:var(--text-light); margin-bottom:10px;">Total Tagihan: <strong id="pay-total-display" style="font-size:22px; color:var(--danger)">Rp 0</strong></p>
 
-            <!-- Hidden input to store the selected payment method -->
             <input type="hidden" id="pay-method" value="QRIS">
 
             <div class="payment-section">
@@ -318,9 +307,7 @@
                 </div>
             </div>
 
-            <div id="pay-instruction" class="glass-card" style="background: rgba(255,255,255,0.8); text-align:center; margin-top:20px;">
-                <!-- Dynamically filled by JS -->
-            </div>
+            <div id="pay-instruction" class="glass-card" style="background: rgba(255,255,255,0.8); text-align:center; margin-top:20px;"></div>
 
             <div style="margin-top: 20px;">
                 <label style="font-size:13px; font-weight:600; display:block; margin-bottom:8px; text-align:center;">Upload Bukti Pembayaran <span style="color:red">*</span></label>
@@ -331,7 +318,7 @@
         </div>
     </div>
 
-    <!-- MODAL TAMBAH PRODUK -->
+    <!-- MODAL TAMBAH PRODUK (MULTI UPLOAD SUPPORT) -->
     <div id="modal-product" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
             <button class="modal-close" onclick="App.closeModal('modal-product')">&times;</button>
@@ -356,8 +343,10 @@
                     <input type="number" id="prod-sold" class="input-glass" placeholder="Terjual (opsional)">
                 </div>
                 
-                <label style="font-size:12px; margin-bottom:5px; display:block;">Foto Produk (Kosongkan jika tidak diubah)</label>
-                <input type="file" id="prod-img" class="input-glass" accept="image/*">
+                <!-- MULTIPLE FILES ACCEPTED -->
+                <label style="font-size:12px; margin-bottom:5px; display:block;">Foto Produk (Bisa Pilih Lebih Dari 1 Foto)</label>
+                <input type="file" id="prod-img" class="input-glass" accept="image/*" multiple>
+                <div id="multi-preview" style="display:flex; gap:5px; overflow-x:auto; margin-bottom:15px;"></div>
                 
                 <button class="btn btn-primary" style="width:100%;" onclick="App.saveProduct()">Simpan & Tampilkan</button>
             </div>
@@ -381,7 +370,6 @@
                 <p><strong>Status:</strong> <span id="ord-status" style="padding:3px 8px; border-radius:4px; background:var(--primary); color:white; font-size:11px;"></span></p>
                 <hr style="margin:10px 0; border:0; border-top:1px solid #ccc;">
                 
-                <!-- PREVIEW BUKTI PEMBAYARAN -->
                 <p style="margin-bottom: 5px;"><strong>Bukti Pembayaran:</strong></p>
                 <img id="ord-receipt-img" src="" alt="Bukti Transfer" style="width:100%; max-height:250px; object-fit:contain; border-radius:8px; display:none; background:rgba(0,0,0,0.05); border: 1px solid #ccc;">
                 <p id="ord-receipt-none" style="font-size:12px; color:var(--danger); display:none; font-style:italic;">Tidak ada bukti bayar dilampirkan.</p>
@@ -410,6 +398,10 @@
                 shippingCost: 15000,
                 uniqueCode: 0,
                 
+                // Image Slider State
+                sliderImages: [],
+                sliderIndex: 0,
+
                 // Order Processing
                 currentOrderTotal: 0,
                 selectedOrderForAdmin: null
@@ -417,6 +409,8 @@
 
             init() {
                 App.fetchData();
+                // Listen to file input for multi-preview
+                document.getElementById('prod-img').addEventListener('change', App.previewMultipleImages);
             },
 
             showLoader(show = true) {
@@ -436,11 +430,7 @@
 
             async apiCall(payload) {
                 const isDummyURL = API_URL.includes("AKfycbyR6w2G4iR5L12J1F7H2qFhYj92z0V79A_0lA2uXh6kL8pW");
-                
-                if (isDummyURL) {
-                    console.log("Menggunakan Data Simulasi (Mock API) karena API_URL adalah dummy.");
-                    return App.mockApi(payload);
-                }
+                if (isDummyURL) return App.mockApi(payload);
 
                 try {
                     const res = await fetch(API_URL, {
@@ -451,8 +441,8 @@
                     if(json.status !== "success") throw new Error(json.message);
                     return json;
                 } catch(e) {
-                    console.warn("API Error, beralih ke Mode Offline / Mock Data:", e);
-                    App.showToast("Server tidak merespons, beralih ke simulasi Offline.");
+                    console.warn("API Error:", e);
+                    App.showToast("Gagal menyambung ke server. Memuat mode offline.");
                     return App.mockApi(payload);
                 }
             },
@@ -476,14 +466,7 @@
                                     EWALLET_DANA: "08111111111 (DANA) a.n Tasbon",
                                     EWALLET_OVO: "08222222222 (OVO) a.n Tasbon",
                                     EWALLET_GOPAY: "08333333333 (GoPay) a.n Tasbon",
-                                    EWALLET_SHOPEEPAY: "08444444444 (ShopeePay) a.n Tasbon",
-                                    LOGO_QRIS: "https://placehold.co/120x40/f8f9fa/333?text=QRIS",
-                                    LOGO_BCA: "https://placehold.co/120x40/f8f9fa/004a98?text=BCA",
-                                    LOGO_BNI: "https://placehold.co/120x40/f8f9fa/f15a23?text=BNI",
-                                    LOGO_DANA: "https://placehold.co/120x40/f8f9fa/118ee9?text=DANA",
-                                    LOGO_OVO: "https://placehold.co/120x40/f8f9fa/4c3494?text=OVO",
-                                    LOGO_GOPAY: "https://placehold.co/120x40/f8f9fa/00a5cf?text=GOPAY",
-                                    LOGO_SHOPEEPAY: "https://placehold.co/120x40/f8f9fa/ee4d2d?text=SHOPEEPAY"
+                                    EWALLET_SHOPEEPAY: "08444444444 (ShopeePay) a.n Tasbon"
                                 };
                                 break;
                             case "getTransactions":
@@ -499,21 +482,24 @@
             },
 
             async fetchData() {
-                App.showLoader(true);
-                const [prodRes, setRes, txRes] = await Promise.all([
-                    App.apiCall({ action: "getProducts", category: "All", page: 1, limit: 100 }),
-                    App.apiCall({ action: "getSettings" }),
-                    App.apiCall({ action: "getTransactions", page: 1, limit: 100 })
-                ]);
-                
-                if (prodRes && prodRes.status === "success") App.state.products = prodRes.data;
-                if (setRes && setRes.status === "success") App.state.settings = setRes.data;
-                if (txRes && txRes.status === "success") App.state.orders = txRes.data;
-                
-                App.renderCategories();
-                App.renderProducts();
-                if(App.state.view === 'admin') App.adminNav(App.state.adminTab);
-                App.showLoader(false);
+                try {
+                    App.showLoader(true);
+                    const [prodRes, setRes, txRes] = await Promise.all([
+                        App.apiCall({ action: "getProducts", category: "All", page: 1, limit: 100 }),
+                        App.apiCall({ action: "getSettings" }),
+                        App.apiCall({ action: "getTransactions", page: 1, limit: 100 })
+                    ]);
+                    
+                    if (prodRes && prodRes.status === "success") App.state.products = prodRes.data;
+                    if (setRes && setRes.status === "success") App.state.settings = setRes.data;
+                    if (txRes && txRes.status === "success") App.state.orders = txRes.data;
+                    
+                    App.renderCategories();
+                    App.renderProducts();
+                    if(App.state.view === 'admin') App.adminNav(App.state.adminTab);
+                } finally {
+                    App.showLoader(false);
+                }
             },
 
             navigate(view) {
@@ -591,13 +577,51 @@
                     return;
                 }
 
-                grid.innerHTML = filtered.map(p => `
+                grid.innerHTML = filtered.map(p => {
+                    let firstImg = 'dtasbon.png';
+                    if (p.Image_URLs) {
+                        // Ambil gambar pertama jika ada lebih dari satu (dipisah koma)
+                        firstImg = p.Image_URLs.split(',')[0].trim(); 
+                    }
+                    return `
                     <div class="glass-card product-card" onclick="App.openCart('${p.ID_Product}')">
-                        <img src="${p.Image_URLs || 'dtasbon.png'}" class="product-image" alt="${p.Name}">
+                        <img src="${firstImg}" class="product-image" alt="${p.Name}">
                         <h3 class="product-title">${p.Name}</h3>
                         <p class="product-price">${App.formatRp(p.Price)}</p>
                     </div>
-                `).join('');
+                `}).join('');
+            },
+
+            // --- UPGRADED: SLIDER LOGIC ---
+            renderSlider() {
+                const imgEl = document.getElementById('cart-img');
+                const dotsEl = document.getElementById('slider-dots');
+                
+                if(App.state.sliderImages.length === 0) {
+                    imgEl.src = 'dtasbon.png';
+                    dotsEl.innerHTML = '';
+                    return;
+                }
+
+                imgEl.src = App.state.sliderImages[App.state.sliderIndex];
+                
+                if(App.state.sliderImages.length > 1) {
+                    dotsEl.innerHTML = App.state.sliderImages.map((_, i) => 
+                        `<span class="dot ${i === App.state.sliderIndex ? 'active' : ''}" onclick="App.state.sliderIndex=${i}; App.renderSlider()"></span>`
+                    ).join('');
+                    document.querySelectorAll('.slider-btn').forEach(btn => btn.style.display = 'flex');
+                } else {
+                    dotsEl.innerHTML = '';
+                    document.querySelectorAll('.slider-btn').forEach(btn => btn.style.display = 'none');
+                }
+            },
+
+            slideImage(dir) {
+                let newIndex = App.state.sliderIndex + dir;
+                if(newIndex >= App.state.sliderImages.length) newIndex = 0;
+                if(newIndex < 0) newIndex = App.state.sliderImages.length - 1;
+                App.state.sliderIndex = newIndex;
+                App.renderSlider();
             },
 
             openCart(productId) {
@@ -606,10 +630,17 @@
                 
                 App.state.cartItem = product;
                 App.state.cartQty = 1;
-                
                 App.state.uniqueCode = Math.floor(Math.random() * 900) + 100;
                 
-                document.getElementById('cart-img').src = product.Image_URLs || 'dtasbon.png';
+                // Extract Image Array
+                if(product.Image_URLs) {
+                    App.state.sliderImages = product.Image_URLs.split(',').map(s => s.trim()).filter(Boolean);
+                } else {
+                    App.state.sliderImages = [];
+                }
+                App.state.sliderIndex = 0;
+                App.renderSlider();
+
                 document.getElementById('cart-title').innerText = product.Name;
                 document.getElementById('cart-price').innerText = App.formatRp(product.Price);
                 document.getElementById('cart-sold').innerText = product.Sold || 0;
@@ -674,7 +705,6 @@
                 }
             },
 
-            // --- UPGRADED: FUNGSI RENDERING LOGO PAYMENT PADA MODAL CHECKOUT ---
             setPaymentGridOption(method, defaultHtml) {
                 const el = document.getElementById('opt-' + method);
                 if(!el) return;
@@ -687,7 +717,6 @@
             },
 
             setupPaymentGrid() {
-                // Terapkan logo gambar jika ada dari Settings
                 App.setPaymentGridOption('QRIS', '<span style="font-weight:900; font-style:italic; font-size:16px;">QRIS</span>');
                 App.setPaymentGridOption('SHOPEEPAY', '<span style="color:#ee4d2d; font-weight:800; font-size:16px;">Shopee</span><span style="font-weight:600; font-size:16px;">Pay</span>');
                 App.setPaymentGridOption('OVO', '<span style="color:#4c3494; font-weight:900; letter-spacing:1px; font-size:16px;">OVO</span>');
@@ -718,8 +747,8 @@
                 document.getElementById('pay-total-display').innerText = App.formatRp(App.state.currentOrderTotal);
                 document.getElementById('pay-receipt').value = '';
 
-                App.setupPaymentGrid(); // Load custom logos into the grid
-                App.selectPayment('QRIS'); // Default Selection
+                App.setupPaymentGrid(); 
+                App.selectPayment('QRIS'); 
                 
                 document.getElementById('modal-payment').classList.remove('hidden');
             },
@@ -752,36 +781,38 @@
                 }
             },
 
-            // --- UPGRADE FILE TO BASE64 UTILITY ---
-            async compressImageToJSON(fileInputId) {
+            // --- UPGRADED: MULTI-IMAGE COMPRESSOR ARRAY ---
+            async compressImagesToJSON(fileInputId) {
                 const fileInput = document.getElementById(fileInputId);
-                if (!fileInput || fileInput.files.length === 0) return null;
+                if (!fileInput || fileInput.files.length === 0) return [];
 
-                const file = fileInput.files[0];
-                const mimeType = file.type;
-                const fileName = "IMG_" + Date.now() + "_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                const results = [];
+                for (let file of fileInput.files) {
+                    const mimeType = file.type;
+                    const fileName = "IMG_" + Date.now() + "_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
 
-                const base64 = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = (event) => {
-                        const img = new Image();
-                        img.src = event.target.result;
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 800; 
-                            let w = img.width, h = img.height;
-                            if (w > h && w > MAX_WIDTH) { h *= MAX_WIDTH / w; w = MAX_WIDTH; }
-                            else if (h > MAX_WIDTH) { w *= MAX_WIDTH / h; h = MAX_WIDTH; }
-                            canvas.width = w; canvas.height = h;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, w, h);
-                            resolve(canvas.toDataURL('image/jpeg', 0.8).split(',')[1]);
+                    const base64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.src = event.target.result;
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 800; 
+                                let w = img.width, h = img.height;
+                                if (w > h && w > MAX_WIDTH) { h *= MAX_WIDTH / w; w = MAX_WIDTH; }
+                                else if (h > MAX_WIDTH) { w *= MAX_WIDTH / h; h = MAX_WIDTH; }
+                                canvas.width = w; canvas.height = h;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, w, h);
+                                resolve(canvas.toDataURL('image/jpeg', 0.8).split(',')[1]);
+                            };
                         };
-                    };
-                });
-
-                return { base64: base64, mime: mimeType, name: fileName };
+                    });
+                    results.push({ base64: base64, mime: mimeType, name: fileName });
+                }
+                return results;
             },
 
             async confirmOrder() {
@@ -791,38 +822,67 @@
                     return;
                 }
 
-                App.showLoader(true);
-                const receiptData = await App.compressImageToJSON('pay-receipt');
-                const method = document.getElementById('pay-method').value;
+                try {
+                    App.showLoader(true);
+                    // Process Receipt Image
+                    const file = receiptInput.files[0];
+                    const mimeType = file.type;
+                    const fileName = "Receipt_" + Date.now() + "_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                    
+                    const receiptBase64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.src = event.target.result;
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 800;
+                                let w = img.width, h = img.height;
+                                if (w > h && w > MAX_WIDTH) { h *= MAX_WIDTH / w; w = MAX_WIDTH; }
+                                else if (h > MAX_WIDTH) { w *= MAX_WIDTH / h; h = MAX_WIDTH; }
+                                canvas.width = w; canvas.height = h;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, w, h);
+                                resolve(canvas.toDataURL('image/jpeg', 0.7).split(',')[1]);
+                            };
+                        };
+                    });
 
-                const orderData = {
-                    name: document.getElementById('co-name').value,
-                    wa: document.getElementById('co-wa').value,
-                    address: document.getElementById('co-address').value,
-                    location: App.state.isMakassar ? "Makassar" : "-",
-                    courier: document.querySelector('input[name="shipping"]:checked').value,
-                    subtotal: App.state.cartItem.Price * App.state.cartQty,
-                    shippingFee: App.state.isMakassar ? App.state.shippingCost : 0,
-                    total: App.state.currentOrderTotal,
-                    paymentMethod: method,
-                    items: [{
-                        id: App.state.cartItem.ID_Product,
-                        name: App.state.cartItem.Name,
-                        qty: App.state.cartQty,
-                        price: App.state.cartItem.Price
-                    }],
-                    receiptBase64: receiptData.base64,
-                    receiptMime: receiptData.mime,
-                    receiptName: receiptData.name
-                };
+                    const method = document.getElementById('pay-method').value;
+                    const orderData = {
+                        name: document.getElementById('co-name').value,
+                        wa: document.getElementById('co-wa').value,
+                        address: document.getElementById('co-address').value,
+                        location: App.state.isMakassar ? "Makassar" : "-",
+                        courier: document.querySelector('input[name="shipping"]:checked').value,
+                        subtotal: App.state.cartItem.Price * App.state.cartQty,
+                        shippingFee: App.state.isMakassar ? App.state.shippingCost : 0,
+                        total: App.state.currentOrderTotal,
+                        paymentMethod: method,
+                        items: [{
+                            id: App.state.cartItem.ID_Product,
+                            name: App.state.cartItem.Name,
+                            qty: App.state.cartQty,
+                            price: App.state.cartItem.Price
+                        }],
+                        receiptBase64: receiptBase64,
+                        receiptMime: mimeType,
+                        receiptName: fileName
+                    };
 
-                const res = await App.apiCall({ action: "processOnlineCheckout", data: orderData });
-                App.showLoader(false);
-                
-                if(res) {
-                    App.closeModal('modal-payment');
-                    App.showToast(`Pesanan #${res.orderId} Dibuat! Menunggu Verifikasi Admin.`);
-                    App.apiCall({ action: "getTransactions", page: 1, limit: 100 }).then(r => { if(r) App.state.orders = r.data; });
+                    const res = await App.apiCall({ action: "processOnlineCheckout", data: orderData });
+                    
+                    if(res) {
+                        App.closeModal('modal-payment');
+                        App.showToast(`Pesanan #${res.orderId} Dibuat! Menunggu Verifikasi Admin.`);
+                        // Fetch latest in background
+                        App.apiCall({ action: "getTransactions", page: 1, limit: 100 }).then(r => { if(r) App.state.orders = r.data; });
+                    }
+                } catch (e) {
+                    App.showToast("Gagal memproses transaksi.");
+                } finally {
+                    App.showLoader(false); // Pastikan mati
                 }
             },
 
@@ -890,28 +950,32 @@
                 if(!id || qty < 1) return App.showToast("Pilih produk valid!");
                 if(qty > p.Stock) return App.showToast("Stok kurang!");
 
-                App.showLoader(true);
-                const data = {
-                    name: document.getElementById('pos-name').value || "Offline Customer",
-                    total: p.Price * qty,
-                    items: JSON.stringify([{ id: p.ID_Product, name: p.Name, qty: qty, price: p.Price }])
-                };
+                try {
+                    App.showLoader(true);
+                    const data = {
+                        name: document.getElementById('pos-name').value || "Offline Customer",
+                        total: p.Price * qty,
+                        items: JSON.stringify([{ id: p.ID_Product, name: p.Name, qty: qty, price: p.Price }])
+                    };
 
-                const res = await App.apiCall({ action: "processOfflineCashier", data: data });
-                App.showLoader(false);
-                
-                if(res) {
-                    App.showToast("Transaksi Offline Berhasil!");
-                    App.fetchData();
-                    document.getElementById('pos-name').value = '';
+                    const res = await App.apiCall({ action: "processOfflineCashier", data: data });
+                    if(res) {
+                        App.showToast("Transaksi Offline Berhasil!");
+                        App.fetchData();
+                        document.getElementById('pos-name').value = '';
+                    }
+                } finally {
+                    App.showLoader(false);
                 }
             },
 
             renderCatalog() {
                 const tbody = document.querySelector('#catalog-table tbody');
-                tbody.innerHTML = App.state.products.map(p => `
+                tbody.innerHTML = App.state.products.map(p => {
+                    let thumb = p.Image_URLs ? p.Image_URLs.split(',')[0].trim() : 'dtasbon.png';
+                    return `
                     <tr>
-                        <td><img src="${p.Image_URLs || 'dtasbon.png'}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;"></td>
+                        <td><img src="${thumb}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;"></td>
                         <td>${p.Name}</td>
                         <td>${p.Category}</td>
                         <td>${App.formatRp(p.Price)}</td>
@@ -920,7 +984,30 @@
                             <button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="App.openProductModal('${p.ID_Product}')">Edit</button>
                         </td>
                     </tr>
-                `).join('');
+                `}).join('');
+            },
+
+            // --- UPGRADED: PREVIEW MULTIPLE IMAGE ---
+            previewMultipleImages() {
+                const previewDiv = document.getElementById('multi-preview');
+                const fileInput = document.getElementById('prod-img');
+                previewDiv.innerHTML = ''; // Clear
+                
+                if (fileInput.files) {
+                    Array.from(fileInput.files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.width = '60px';
+                            img.style.height = '60px';
+                            img.style.objectFit = 'cover';
+                            img.style.borderRadius = '5px';
+                            previewDiv.appendChild(img);
+                        }
+                        reader.readAsDataURL(file);
+                    });
+                }
             },
 
             openProductModal(id = null) {
@@ -934,6 +1021,7 @@
                 document.getElementById('prod-stock').value = '';
                 document.getElementById('prod-sold').value = '0';
                 document.getElementById('prod-img').value = '';
+                document.getElementById('multi-preview').innerHTML = ''; // reset
 
                 if(id) {
                     const p = App.state.products.find(x => x.ID_Product === id);
@@ -948,6 +1036,13 @@
                         document.getElementById('prod-cogs').value = p.Capital_Price;
                         document.getElementById('prod-stock').value = p.Stock;
                         document.getElementById('prod-sold').value = p.Sold || 0;
+                        
+                        // Show old image previews
+                        if(p.Image_URLs) {
+                            document.getElementById('multi-preview').innerHTML = p.Image_URLs.split(',').map(url => 
+                                `<img src="${url.trim()}" style="width:60px;height:60px;object-fit:cover;border-radius:5px;opacity:0.6;">`
+                            ).join('');
+                        }
                     }
                 } else {
                     document.getElementById('prod-modal-title').innerText = "+ Tambah Produk";
@@ -956,31 +1051,37 @@
             },
 
             async saveProduct() {
-                App.showLoader(true);
-                const imgData = await App.compressImageToJSON('prod-img');
+                try {
+                    App.showLoader(true);
+                    
+                    // Compress array of images
+                    const imgArray = await App.compressImagesToJSON('prod-img');
 
-                const data = {
-                    id: document.getElementById('prod-id').value,
-                    existingImage: document.getElementById('prod-existing-img').value,
-                    name: document.getElementById('prod-name').value,
-                    category: document.getElementById('prod-cat').value,
-                    desc: document.getElementById('prod-desc').value,
-                    price: parseInt(document.getElementById('prod-price').value),
-                    capital: parseInt(document.getElementById('prod-cogs').value),
-                    stock: parseInt(document.getElementById('prod-stock').value),
-                    sold: parseInt(document.getElementById('prod-sold').value),
-                    imageBase64: imgData ? imgData.base64 : null, 
-                    imageMime: imgData ? imgData.mime : null, 
-                    imageName: imgData ? imgData.name : null
-                };
+                    const data = {
+                        id: document.getElementById('prod-id').value,
+                        existingImage: document.getElementById('prod-existing-img').value,
+                        name: document.getElementById('prod-name').value,
+                        category: document.getElementById('prod-cat').value,
+                        desc: document.getElementById('prod-desc').value,
+                        price: parseInt(document.getElementById('prod-price').value),
+                        capital: parseInt(document.getElementById('prod-cogs').value),
+                        stock: parseInt(document.getElementById('prod-stock').value),
+                        sold: parseInt(document.getElementById('prod-sold').value),
+                        imagesData: imgArray // Send array to Backend
+                    };
 
-                const res = await App.apiCall({ action: "saveProduct", data: data });
-                
-                App.showLoader(false);
-                if(res) {
-                    App.fetchData();
-                    App.closeModal('modal-product');
-                    App.showToast("Produk sukses disimpan ke Server!");
+                    const res = await App.apiCall({ action: "saveProduct", data: data });
+                    
+                    if(res) {
+                        // Background update
+                        App.fetchData();
+                        App.closeModal('modal-product');
+                        App.showToast("Produk sukses disimpan ke Server!");
+                    }
+                } catch (e) {
+                    App.showToast("Gagal menyimpan produk.");
+                } finally {
+                    App.showLoader(false); // Guarantee loader close
                 }
             },
 
@@ -1051,23 +1152,47 @@
                 const o = App.state.selectedOrderForAdmin;
                 if(!o) return;
 
-                App.showLoader(true);
-                const res = await App.apiCall({ action: "updateTransactionStatus", orderId: o.Order_ID, status: "SUCCESS" });
-
-                App.showLoader(false);
-                if(res) {
-                    App.closeModal('modal-order');
-                    App.fetchData();
-                    App.showToast("Transaksi Berhasil Dikonfirmasi!");
+                try {
+                    App.showLoader(true);
+                    const res = await App.apiCall({ action: "updateTransactionStatus", orderId: o.Order_ID, status: "SUCCESS" });
+                    
+                    if(res) {
+                        App.closeModal('modal-order');
+                        App.fetchData();
+                        App.showToast("Transaksi Berhasil Dikonfirmasi!");
+                    }
+                } finally {
+                    App.showLoader(false);
                 }
             },
 
-            // --- UPGRADED: TAMPILAN SETTINGS DENGAN LOGO ---
+            renderFinance() {
+                const success = App.state.orders.filter(o => o.Status && o.Status.includes('SUCCESS'));
+                
+                const gross = success.reduce((sum, o) => sum + (Number(o.Total) || 0), 0);
+                let cogs = 0;
+
+                success.forEach(o => {
+                    try {
+                        const items = JSON.parse(o.Items_Detail);
+                        items.forEach(i => {
+                            const prod = App.state.products.find(p => p.ID_Product === i.id);
+                            if (prod) cogs += (Number(prod.Capital_Price) || 0) * i.qty;
+                        });
+                    } catch(e) {}
+                });
+
+                const net = gross - cogs;
+
+                document.getElementById('fin-gross').innerText = App.formatRp(gross);
+                document.getElementById('fin-cogs').innerText = App.formatRp(cogs);
+                document.getElementById('fin-net').innerText = App.formatRp(net);
+            },
+
             renderSettings() {
                 const s = App.state.settings;
                 const arr = ['qris', 'bca', 'bni', 'dana', 'ovo', 'gopay', 'shopeepay'];
                 
-                // Set Text Inputs
                 document.getElementById('set-qris').value = s.QRIS_LINK || '';
                 document.getElementById('set-bca').value = s.BCA || '';
                 document.getElementById('set-bni').value = s.BNI || '';
@@ -1076,11 +1201,10 @@
                 document.getElementById('set-gopay').value = s.EWALLET_GOPAY || '';
                 document.getElementById('set-shopeepay').value = s.EWALLET_SHOPEEPAY || '';
 
-                // Tampilkan Image Preview Jika Ada
                 arr.forEach(key => {
                     const dbKey = 'LOGO_' + key.toUpperCase();
                     const imgEl = document.getElementById('preview-' + key);
-                    document.getElementById('logo-' + key).value = ''; // reset file input
+                    document.getElementById('logo-' + key).value = ''; 
 
                     if(s[dbKey] && s[dbKey].startsWith('http')) {
                         imgEl.src = s[dbKey];
@@ -1092,43 +1216,45 @@
             },
 
             async saveSettings() {
-                App.showLoader(true);
-                
-                // Ambil & Proses Image Inputs Menjadi Base64
-                const logoQris = await App.compressImageToJSON('logo-qris');
-                const logoBca = await App.compressImageToJSON('logo-bca');
-                const logoBni = await App.compressImageToJSON('logo-bni');
-                const logoDana = await App.compressImageToJSON('logo-dana');
-                const logoOvo = await App.compressImageToJSON('logo-ovo');
-                const logoGopay = await App.compressImageToJSON('logo-gopay');
-                const logoShopee = await App.compressImageToJSON('logo-shopeepay');
-
-                const data = {
-                    qris: document.getElementById('set-qris').value,
-                    bca: document.getElementById('set-bca').value,
-                    bni: document.getElementById('set-bni').value,
-                    dana: document.getElementById('set-dana').value,
-                    ovo: document.getElementById('set-ovo').value,
-                    gopay: document.getElementById('set-gopay').value,
-                    shopeepay: document.getElementById('set-shopeepay').value,
+                try {
+                    App.showLoader(true);
                     
-                    // Bundle image data 
-                    imgQris: logoQris,
-                    imgBca: logoBca,
-                    imgBni: logoBni,
-                    imgDana: logoDana,
-                    imgOvo: logoOvo,
-                    imgGopay: logoGopay,
-                    imgShopee: logoShopee
-                };
+                    // Single file uploads to array extraction
+                    const getImg = async (id) => { const a = await App.compressImagesToJSON(id); return a.length > 0 ? a[0] : null; };
 
-                const res = await App.apiCall({ action: "updateSettings", data: data });
-                
-                if(res) {
-                    // Update cache state setelah load berhasil
-                    await App.fetchData(); // Fetch the latest data to re-render logos properly
-                    App.showToast("Pengaturan E-Wallet, Bank, dan Logo Berhasil Disimpan!");
-                } else {
+                    const logoQris = await getImg('logo-qris');
+                    const logoBca = await getImg('logo-bca');
+                    const logoBni = await getImg('logo-bni');
+                    const logoDana = await getImg('logo-dana');
+                    const logoOvo = await getImg('logo-ovo');
+                    const logoGopay = await getImg('logo-gopay');
+                    const logoShopee = await getImg('logo-shopeepay');
+
+                    const data = {
+                        qris: document.getElementById('set-qris').value,
+                        bca: document.getElementById('set-bca').value,
+                        bni: document.getElementById('set-bni').value,
+                        dana: document.getElementById('set-dana').value,
+                        ovo: document.getElementById('set-ovo').value,
+                        gopay: document.getElementById('set-gopay').value,
+                        shopeepay: document.getElementById('set-shopeepay').value,
+                        
+                        imgQris: logoQris,
+                        imgBca: logoBca,
+                        imgBni: logoBni,
+                        imgDana: logoDana,
+                        imgOvo: logoOvo,
+                        imgGopay: logoGopay,
+                        imgShopee: logoShopee
+                    };
+
+                    const res = await App.apiCall({ action: "updateSettings", data: data });
+                    
+                    if(res) {
+                        await App.fetchData(); 
+                        App.showToast("Pengaturan E-Wallet, Bank, dan Logo Berhasil Disimpan!");
+                    }
+                } finally {
                     App.showLoader(false);
                 }
             },
