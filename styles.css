@@ -333,7 +333,47 @@ main {
   padding-top: 8px;
 }
 
-/* Payment Specific */
+/* --- UPGRADE: Payment Method Grid Styles --- */
+.payment-section h4 {
+  margin: 20px 0 10px 0;
+  font-size: 14px;
+  color: var(--text-dark);
+  text-align: left;
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.pay-option {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 55px;
+  user-select: none;
+}
+
+.pay-option:hover {
+  background: #fff;
+  border-color: #aaa;
+}
+
+.pay-option.active {
+  border: 2px solid var(--primary);
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Payment QRIS Specific */
 .qr-container {
   text-align: center;
   margin: 20px 0;
