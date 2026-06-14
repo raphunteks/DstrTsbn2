@@ -7,18 +7,24 @@
     <!-- Favicon Dtasbon -->
     <link rel="icon" href="dtasbon.png" type="image/png">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Link to external CSS -->
+    <link href="[https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
+    <!-- Tautan ke file CSS Terpisah -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div id="app" class="container">
+    <!-- Global Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p style="margin-top: 15px; font-weight: 500;" id="loading-text">Memuat Data...</p>
+    </div>
+
+    <div id="app" class="container" style="display:none;">
         
         <!-- HEADER -->
         <header class="glass">
             <div class="logo">
-                <img src="dtasbon.png" alt="Daster Tasbon Logo" onerror="this.src='https://ui-avatars.com/api/?name=DT&background=000&color=fff'">
+                <img src="dtasbon.png" alt="Daster Tasbon Logo" onerror="this.src='[https://ui-avatars.com/api/?name=DT&background=000&color=fff](https://ui-avatars.com/api/?name=DT&background=000&color=fff)'">
                 <span>Daster Tasbon</span>
             </div>
             <div>
@@ -150,7 +156,7 @@
                 <p>Pilih metode pembayaran di atas.</p>
             </div>
 
-            <button class="btn btn-dark" style="width: 100%;" onclick="confirmCustomerOrder()">Saya Sudah Bayar</button>
+            <button class="btn btn-dark" style="width: 100%;" id="btn-confirm-order" onclick="confirmCustomerOrder()">Saya Sudah Bayar</button>
         </div>
     </div>
 
@@ -181,7 +187,7 @@
                 <p style="margin-bottom: 5px;">Media Product (Image)</p>
                 <input type="file" id="prod-file" class="input-glass" accept="image/*">
                 
-                <button class="btn btn-dark" style="width: 100%; margin-top: 10px;" onclick="saveProduct()">Simpan & Tampilkan</button>
+                <button class="btn btn-dark" style="width: 100%; margin-top: 10px;" id="btn-save-product" onclick="saveProduct()">Simpan & Tampilkan</button>
             </div>
         </div>
     </div>
@@ -198,7 +204,7 @@
         </div>
     </div>
 
-    <!-- Link to external JS -->
+    <!-- Tautan ke file JavaScript Terpisah -->
     <script src="script.js"></script>
 </body>
 </html>
