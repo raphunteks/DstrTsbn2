@@ -612,7 +612,7 @@
                 <input type="hidden" id="prod-existing-img">
                 <input type="text" id="prod-name" class="input-glass" placeholder="Nama Produk">
                 
-                <!-- UPGRADE: DROPDOWN DINAMIS (BISA PILIH ATAU KETIK BARU) -->
+                <!-- DROPDOWN DINAMIS (BISA PILIH ATAU KETIK BARU) -->
                 <input type="text" id="prod-cat" list="cat-list" class="input-glass" placeholder="Ketik kategori baru atau pilih dari daftar...">
                 <datalist id="cat-list">
                     <!-- Otomatis diisi oleh JavaScript dari Database -->
@@ -1153,11 +1153,48 @@
                 if(fileInput.files.length > 0) {
                     const file = fileInput.files[0];
                     mimeType = file.type; filename = file.name;
-                    base64 = await new Promise((res) => {
+                    
+                    // --- KOMPRESI GAMBAR (SOLUSI INFINITE LOADING) ---
+                    // Mengubah ukuran gambar di memori peramban Anda menjadi sangat kecil sebelum dikirim ke Google!
+                    base64 = await new Promise((resolve) => {
                         const reader = new FileReader();
-                        reader.onload = e => res(e.target.result.split(',')[1]);
                         reader.readAsDataURL(file);
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.src = event.target.result;
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 800; // Maksimal lebar 800px
+                                const MAX_HEIGHT = 800; // Maksimal tinggi 800px
+                                let width = img.width;
+                                let height = img.height;
+
+                                if (width > height) {
+                                    if (width > MAX_WIDTH) {
+                                        height *= MAX_WIDTH / width;
+                                        width = MAX_WIDTH;
+                                    }
+                                } else {
+                                    if (height > MAX_HEIGHT) {
+                                        width *= MAX_HEIGHT / height;
+                                        height = MAX_HEIGHT;
+                                    }
+                                }
+
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, width, height);
+                                
+                                // Kompresi gambar ke format JPEG dengan kualitas 70% 
+                                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                                resolve(dataUrl.split(',')[1]); // Kembalikan string base64 yang sudah diperkecil
+                            };
+                        };
                     });
+                    mimeType = 'image/jpeg';
+                    filename = "compressed_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                    // --- AKHIR KOMPRESI ---
                 }
 
                 const data = {
