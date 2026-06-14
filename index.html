@@ -143,40 +143,75 @@
                     </div>
 
                     <div id="admin-settings" class="hidden">
-                        <h2>Pengaturan Sistem</h2>
-                        <div class="glass-card" style="max-width: 600px; margin-top:20px;">
-                            <label style="font-weight:600; font-size:12px;">Link Gambar QRIS</label>
-                            <input type="text" id="set-qris" class="input-glass" placeholder="https://api.qrserver.com/.../...">
-                            
-                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                                <div>
-                                    <label style="font-weight:600; font-size:12px;">No. Rekening BCA</label>
-                                    <input type="text" id="set-bca" class="input-glass" placeholder="BCA 1234567890">
-                                </div>
-                                <div>
-                                    <label style="font-weight:600; font-size:12px;">No. Rekening BNI</label>
-                                    <input type="text" id="set-bni" class="input-glass" placeholder="BNI 1234567890">
-                                </div>
-                                <div>
-                                    <label style="font-weight:600; font-size:12px;">No. DANA</label>
-                                    <input type="text" id="set-dana" class="input-glass" placeholder="081xxx (DANA)">
-                                </div>
-                                <div>
-                                    <label style="font-weight:600; font-size:12px;">No. OVO</label>
-                                    <input type="text" id="set-ovo" class="input-glass" placeholder="081xxx (OVO)">
-                                </div>
-                                <div>
-                                    <label style="font-weight:600; font-size:12px;">No. GoPay</label>
-                                    <input type="text" id="set-gopay" class="input-glass" placeholder="081xxx (GoPay)">
-                                </div>
-                                <div>
-                                    <label style="font-weight:600; font-size:12px;">No. ShopeePay</label>
-                                    <input type="text" id="set-shopeepay" class="input-glass" placeholder="081xxx (ShopeePay)">
+                        <h2>Pengaturan Sistem & Payment</h2>
+                        
+                        <div class="settings-grid" style="margin-top:20px;">
+                            <!-- QRIS -->
+                            <div class="glass-card setting-box">
+                                <label>Link Data QRIS</label>
+                                <input type="text" id="set-qris" class="input-glass" placeholder="https://api.qrserver.com/.../...">
+                                <div class="setting-logo-row">
+                                    <img id="preview-qris" src="" class="preview-logo hidden">
+                                    <input type="file" id="logo-qris" class="input-glass upload-glass" accept="image/*">
                                 </div>
                             </div>
-                            
-                            <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="App.saveSettings()">Simpan Pengaturan</button>
+                            <!-- BCA -->
+                            <div class="glass-card setting-box">
+                                <label>Bank BCA</label>
+                                <input type="text" id="set-bca" class="input-glass" placeholder="BCA 1234567890">
+                                <div class="setting-logo-row">
+                                    <img id="preview-bca" src="" class="preview-logo hidden">
+                                    <input type="file" id="logo-bca" class="input-glass upload-glass" accept="image/*">
+                                </div>
+                            </div>
+                            <!-- BNI -->
+                            <div class="glass-card setting-box">
+                                <label>Bank BNI</label>
+                                <input type="text" id="set-bni" class="input-glass" placeholder="BNI 1234567890">
+                                <div class="setting-logo-row">
+                                    <img id="preview-bni" src="" class="preview-logo hidden">
+                                    <input type="file" id="logo-bni" class="input-glass upload-glass" accept="image/*">
+                                </div>
+                            </div>
+                            <!-- DANA -->
+                            <div class="glass-card setting-box">
+                                <label>E-Wallet DANA</label>
+                                <input type="text" id="set-dana" class="input-glass" placeholder="081xxx (DANA)">
+                                <div class="setting-logo-row">
+                                    <img id="preview-dana" src="" class="preview-logo hidden">
+                                    <input type="file" id="logo-dana" class="input-glass upload-glass" accept="image/*">
+                                </div>
+                            </div>
+                            <!-- OVO -->
+                            <div class="glass-card setting-box">
+                                <label>E-Wallet OVO</label>
+                                <input type="text" id="set-ovo" class="input-glass" placeholder="081xxx (OVO)">
+                                <div class="setting-logo-row">
+                                    <img id="preview-ovo" src="" class="preview-logo hidden">
+                                    <input type="file" id="logo-ovo" class="input-glass upload-glass" accept="image/*">
+                                </div>
+                            </div>
+                            <!-- GOPAY -->
+                            <div class="glass-card setting-box">
+                                <label>E-Wallet GoPay</label>
+                                <input type="text" id="set-gopay" class="input-glass" placeholder="081xxx (GoPay)">
+                                <div class="setting-logo-row">
+                                    <img id="preview-gopay" src="" class="preview-logo hidden">
+                                    <input type="file" id="logo-gopay" class="input-glass upload-glass" accept="image/*">
+                                </div>
+                            </div>
+                            <!-- SHOPEEPAY -->
+                            <div class="glass-card setting-box">
+                                <label>E-Wallet ShopeePay</label>
+                                <input type="text" id="set-shopeepay" class="input-glass" placeholder="081xxx (ShopeePay)">
+                                <div class="setting-logo-row">
+                                    <img id="preview-shopeepay" src="" class="preview-logo hidden">
+                                    <input type="file" id="logo-shopeepay" class="input-glass upload-glass" accept="image/*">
+                                </div>
+                            </div>
                         </div>
+                        
+                        <button class="btn btn-primary" style="width:100%; margin-top:20px; font-size:16px;" onclick="App.saveSettings()">Upload Logo & Simpan Pengaturan</button>
                     </div>
 
                 </div>
@@ -256,7 +291,7 @@
         </div>
     </div>
 
-    <!-- UPGRADED PAYMENT MODAL (WITH UPLOAD) -->
+    <!-- UPGRADED PAYMENT MODAL (DYNAMIC LOGO) -->
     <div id="modal-payment" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-width: 500px; padding: 30px;">
             <button class="modal-close" onclick="App.closeModal('modal-payment')">&times;</button>
@@ -269,31 +304,17 @@
             <div class="payment-section">
                 <h4>E-Wallet & Instant Payment</h4>
                 <div class="payment-grid">
-                    <div class="pay-option active" onclick="App.selectPayment('QRIS')" id="opt-QRIS">
-                        <span style="font-weight:900; font-style:italic; font-size:16px;">QRIS</span>
-                    </div>
-                    <div class="pay-option" onclick="App.selectPayment('SHOPEEPAY')" id="opt-SHOPEEPAY">
-                        <span style="color:#ee4d2d; font-weight:800; font-size:16px;">Shopee</span><span style="font-weight:600; font-size:16px;">Pay</span>
-                    </div>
-                    <div class="pay-option" onclick="App.selectPayment('OVO')" id="opt-OVO">
-                        <span style="color:#4c3494; font-weight:900; letter-spacing:1px; font-size:16px;">OVO</span>
-                    </div>
-                    <div class="pay-option" onclick="App.selectPayment('DANA')" id="opt-DANA">
-                        <span style="color:#118ee9; font-weight:800; font-size:16px;">DANA</span>
-                    </div>
-                    <div class="pay-option" onclick="App.selectPayment('GOPAY')" id="opt-GOPAY">
-                        <span style="color:#00a5cf; font-weight:800; font-size:16px;">gopay</span>
-                    </div>
+                    <div class="pay-option active" onclick="App.selectPayment('QRIS')" id="opt-QRIS"></div>
+                    <div class="pay-option" onclick="App.selectPayment('SHOPEEPAY')" id="opt-SHOPEEPAY"></div>
+                    <div class="pay-option" onclick="App.selectPayment('OVO')" id="opt-OVO"></div>
+                    <div class="pay-option" onclick="App.selectPayment('DANA')" id="opt-DANA"></div>
+                    <div class="pay-option" onclick="App.selectPayment('GOPAY')" id="opt-GOPAY"></div>
                 </div>
 
                 <h4>Virtual Account / Transfer Bank</h4>
                 <div class="payment-grid">
-                    <div class="pay-option" onclick="App.selectPayment('BCA')" id="opt-BCA">
-                        <span style="color:#004a98; font-weight:900; font-style:italic; font-size:18px;">BCA</span>
-                    </div>
-                    <div class="pay-option" onclick="App.selectPayment('BNI')" id="opt-BNI">
-                        <span style="color:#f15a23; font-weight:900; font-size:18px;">B</span><span style="color:#005e6a; font-weight:900; font-size:18px;">NI</span>
-                    </div>
+                    <div class="pay-option" onclick="App.selectPayment('BCA')" id="opt-BCA"></div>
+                    <div class="pay-option" onclick="App.selectPayment('BNI')" id="opt-BNI"></div>
                 </div>
             </div>
 
@@ -321,11 +342,8 @@
                 <input type="hidden" id="prod-existing-img">
                 <input type="text" id="prod-name" class="input-glass" placeholder="Nama Produk">
                 
-                <!-- DROPDOWN DINAMIS (BISA PILIH ATAU KETIK BARU) -->
                 <input type="text" id="prod-cat" list="cat-list" class="input-glass" placeholder="Ketik kategori baru atau pilih dari daftar...">
-                <datalist id="cat-list">
-                    <!-- Otomatis diisi oleh JavaScript dari Database -->
-                </datalist>
+                <datalist id="cat-list"></datalist>
 
                 <textarea id="prod-desc" class="input-glass" placeholder="Deskripsi"></textarea>
                 
@@ -390,7 +408,7 @@
                 cartQty: 1,
                 isMakassar: false,
                 shippingCost: 15000,
-                uniqueCode: 0, // NEW: 3 Kode Unik
+                uniqueCode: 0,
                 
                 // Order Processing
                 currentOrderTotal: 0,
@@ -447,8 +465,7 @@
                             case "getProducts":
                                 result.data = [
                                     { ID_Product: "PRD-001", Name: "Daster Kartika Bunga", Category: "Daster Kartika", Price: 55000, Capital_Price: 35000, Stock: 100, Sold: 25, Image_URLs: "https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?auto=format&fit=crop&w=400&q=80", Desc: "Daster nyaman bahan rayon premium." },
-                                    { ID_Product: "PRD-002", Name: "Daster Elok Renda", Category: "Daster Elok", Price: 65000, Capital_Price: 40000, Stock: 50, Sold: 10, Image_URLs: "https://images.unsplash.com/photo-1515347619362-71683e913a85?auto=format&fit=crop&w=400&q=80", Desc: "Daster cantik dengan aksen renda." },
-                                    { ID_Product: "PRD-003", Name: "Daster Setcel Polos", Category: "Daster Setcel", Price: 85000, Capital_Price: 55000, Stock: 75, Sold: 50, Image_URLs: "https://images.unsplash.com/photo-1434389678232-04ce6c5da41d?auto=format&fit=crop&w=400&q=80", Desc: "Satu set celana dan atasan santai." }
+                                    { ID_Product: "PRD-002", Name: "Daster Elok Renda", Category: "Daster Elok", Price: 65000, Capital_Price: 40000, Stock: 50, Sold: 10, Image_URLs: "https://images.unsplash.com/photo-1515347619362-71683e913a85?auto=format&fit=crop&w=400&q=80", Desc: "Daster cantik dengan aksen renda." }
                                 ];
                                 break;
                             case "getSettings":
@@ -459,13 +476,18 @@
                                     EWALLET_DANA: "08111111111 (DANA) a.n Tasbon",
                                     EWALLET_OVO: "08222222222 (OVO) a.n Tasbon",
                                     EWALLET_GOPAY: "08333333333 (GoPay) a.n Tasbon",
-                                    EWALLET_SHOPEEPAY: "08444444444 (ShopeePay) a.n Tasbon"
+                                    EWALLET_SHOPEEPAY: "08444444444 (ShopeePay) a.n Tasbon",
+                                    LOGO_QRIS: "https://placehold.co/120x40/f8f9fa/333?text=QRIS",
+                                    LOGO_BCA: "https://placehold.co/120x40/f8f9fa/004a98?text=BCA",
+                                    LOGO_BNI: "https://placehold.co/120x40/f8f9fa/f15a23?text=BNI",
+                                    LOGO_DANA: "https://placehold.co/120x40/f8f9fa/118ee9?text=DANA",
+                                    LOGO_OVO: "https://placehold.co/120x40/f8f9fa/4c3494?text=OVO",
+                                    LOGO_GOPAY: "https://placehold.co/120x40/f8f9fa/00a5cf?text=GOPAY",
+                                    LOGO_SHOPEEPAY: "https://placehold.co/120x40/f8f9fa/ee4d2d?text=SHOPEEPAY"
                                 };
                                 break;
                             case "getTransactions":
-                                result.data = [
-                                    { Order_ID: "ORD-DUMMY-123", Date: new Date().toLocaleDateString(), Customer_Name: "Pelanggan A", WA: "0812", Address: "Alamat A", Total: 55910, Status: "PENDING_PAYMENT", Payment_Method: "DANA", Items_Detail: '[{"id":"PRD-001","name":"Daster Kartika Bunga","qty":1,"price":55000}]', Payment_Receipt: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=400&q=80" }
-                                ];
+                                result.data = [];
                                 break;
                             default:
                                 result.orderId = "ORD-DUMMY-" + Math.floor(Math.random() * 100000);
@@ -585,8 +607,7 @@
                 App.state.cartItem = product;
                 App.state.cartQty = 1;
                 
-                // GENERATE 3 KODE UNIK SAAT CART DIBUKA
-                App.state.uniqueCode = Math.floor(Math.random() * 900) + 100; // Angka acak 100 s.d 999
+                App.state.uniqueCode = Math.floor(Math.random() * 900) + 100;
                 
                 document.getElementById('cart-img').src = product.Image_URLs || 'dtasbon.png';
                 document.getElementById('cart-title').innerText = product.Name;
@@ -631,7 +652,6 @@
                     document.getElementById('row-shipping').style.display = 'none';
                 }
                 
-                // TAMBAHKAN 3 KODE UNIK
                 document.getElementById('sum-unique').innerText = App.formatRp(App.state.uniqueCode);
                 total += App.state.uniqueCode;
                 
@@ -654,16 +674,33 @@
                 }
             },
 
-            // --- UPGRADED: FUNGSI MEMILIH KOTAK PAYMENT ---
+            // --- UPGRADED: FUNGSI RENDERING LOGO PAYMENT PADA MODAL CHECKOUT ---
+            setPaymentGridOption(method, defaultHtml) {
+                const el = document.getElementById('opt-' + method);
+                if(!el) return;
+                const logoKey = 'LOGO_' + method;
+                if(App.state.settings[logoKey] && App.state.settings[logoKey].startsWith('http')) {
+                    el.innerHTML = `<img src="${App.state.settings[logoKey]}" class="pay-logo" alt="${method}">`;
+                } else {
+                    el.innerHTML = defaultHtml;
+                }
+            },
+
+            setupPaymentGrid() {
+                // Terapkan logo gambar jika ada dari Settings
+                App.setPaymentGridOption('QRIS', '<span style="font-weight:900; font-style:italic; font-size:16px;">QRIS</span>');
+                App.setPaymentGridOption('SHOPEEPAY', '<span style="color:#ee4d2d; font-weight:800; font-size:16px;">Shopee</span><span style="font-weight:600; font-size:16px;">Pay</span>');
+                App.setPaymentGridOption('OVO', '<span style="color:#4c3494; font-weight:900; letter-spacing:1px; font-size:16px;">OVO</span>');
+                App.setPaymentGridOption('DANA', '<span style="color:#118ee9; font-weight:800; font-size:16px;">DANA</span>');
+                App.setPaymentGridOption('GOPAY', '<span style="color:#00a5cf; font-weight:800; font-size:16px;">gopay</span>');
+                App.setPaymentGridOption('BCA', '<span style="color:#004a98; font-weight:900; font-style:italic; font-size:18px;">BCA</span>');
+                App.setPaymentGridOption('BNI', '<span style="color:#f15a23; font-weight:900; font-size:18px;">B</span><span style="color:#005e6a; font-weight:900; font-size:18px;">NI</span>');
+            },
+
             selectPayment(method) {
-                // Update hidden input
                 document.getElementById('pay-method').value = method;
-                
-                // Hilangkan state 'active' dari semua tombol, lalu aktifkan yang dipilih
                 document.querySelectorAll('.pay-option').forEach(el => el.classList.remove('active'));
                 document.getElementById('opt-' + method).classList.add('active');
-                
-                // Panggil render instruksi UI
                 App.changePaymentMethod();
             },
 
@@ -679,12 +716,10 @@
 
                 document.getElementById('modal-cart').classList.add('hidden');
                 document.getElementById('pay-total-display').innerText = App.formatRp(App.state.currentOrderTotal);
-                
-                // Reset input file bukti bayar
                 document.getElementById('pay-receipt').value = '';
 
-                // Memastikan pilihan default reset ke QRIS saat modal pembayaran dibuka
-                App.selectPayment('QRIS'); 
+                App.setupPaymentGrid(); // Load custom logos into the grid
+                App.selectPayment('QRIS'); // Default Selection
                 
                 document.getElementById('modal-payment').classList.remove('hidden');
             },
@@ -717,22 +752,16 @@
                 }
             },
 
-            async confirmOrder() {
-                // VALIDASI BUKTI PEMBAYARAN
-                const receiptInput = document.getElementById('pay-receipt');
-                if (receiptInput.files.length === 0) {
-                    App.showToast("Harap Upload Bukti Pembayaran terlebih dahulu!");
-                    return;
-                }
+            // --- UPGRADE FILE TO BASE64 UTILITY ---
+            async compressImageToJSON(fileInputId) {
+                const fileInput = document.getElementById(fileInputId);
+                if (!fileInput || fileInput.files.length === 0) return null;
 
-                App.showLoader(true);
-
-                // KOMPRESI DAN KONVERSI GAMBAR KE BASE64
-                const file = receiptInput.files[0];
+                const file = fileInput.files[0];
                 const mimeType = file.type;
-                const fileName = "Receipt_" + Date.now() + "_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
-                
-                const receiptBase64 = await new Promise((resolve) => {
+                const fileName = "IMG_" + Date.now() + "_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+
+                const base64 = await new Promise((resolve) => {
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
                     reader.onload = (event) => {
@@ -740,29 +769,32 @@
                         img.src = event.target.result;
                         img.onload = () => {
                             const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 800; // Kompresi agar upload cepat
-                            const MAX_HEIGHT = 800;
-                            let width = img.width;
-                            let height = img.height;
-
-                            if (width > height) {
-                                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                            } else {
-                                if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                            }
-
-                            canvas.width = width;
-                            canvas.height = height;
+                            const MAX_WIDTH = 800; 
+                            let w = img.width, h = img.height;
+                            if (w > h && w > MAX_WIDTH) { h *= MAX_WIDTH / w; w = MAX_WIDTH; }
+                            else if (h > MAX_WIDTH) { w *= MAX_WIDTH / h; h = MAX_WIDTH; }
+                            canvas.width = w; canvas.height = h;
                             const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-                            
-                            const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-                            resolve(dataUrl.split(',')[1]);
+                            ctx.drawImage(img, 0, 0, w, h);
+                            resolve(canvas.toDataURL('image/jpeg', 0.8).split(',')[1]);
                         };
                     };
                 });
 
+                return { base64: base64, mime: mimeType, name: fileName };
+            },
+
+            async confirmOrder() {
+                const receiptInput = document.getElementById('pay-receipt');
+                if (receiptInput.files.length === 0) {
+                    App.showToast("Harap Upload Bukti Pembayaran terlebih dahulu!");
+                    return;
+                }
+
+                App.showLoader(true);
+                const receiptData = await App.compressImageToJSON('pay-receipt');
                 const method = document.getElementById('pay-method').value;
+
                 const orderData = {
                     name: document.getElementById('co-name').value,
                     wa: document.getElementById('co-wa').value,
@@ -779,10 +811,9 @@
                         qty: App.state.cartQty,
                         price: App.state.cartItem.Price
                     }],
-                    // KIRIM DATA GAMBAR KE BACKEND
-                    receiptBase64: receiptBase64,
-                    receiptMime: 'image/jpeg',
-                    receiptName: fileName
+                    receiptBase64: receiptData.base64,
+                    receiptMime: receiptData.mime,
+                    receiptName: receiptData.name
                 };
 
                 const res = await App.apiCall({ action: "processOnlineCheckout", data: orderData });
@@ -926,45 +957,7 @@
 
             async saveProduct() {
                 App.showLoader(true);
-                const fileInput = document.getElementById('prod-img');
-                let base64 = null, mimeType = null, filename = null;
-
-                if(fileInput.files.length > 0) {
-                    const file = fileInput.files[0];
-                    mimeType = file.type; filename = file.name;
-                    
-                    base64 = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onload = (event) => {
-                            const img = new Image();
-                            img.src = event.target.result;
-                            img.onload = () => {
-                                const canvas = document.createElement('canvas');
-                                const MAX_WIDTH = 800;
-                                const MAX_HEIGHT = 800;
-                                let width = img.width;
-                                let height = img.height;
-
-                                if (width > height) {
-                                    if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                                } else {
-                                    if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                                }
-
-                                canvas.width = width;
-                                canvas.height = height;
-                                const ctx = canvas.getContext('2d');
-                                ctx.drawImage(img, 0, 0, width, height);
-                                
-                                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-                                resolve(dataUrl.split(',')[1]);
-                            };
-                        };
-                    });
-                    mimeType = 'image/jpeg';
-                    filename = "compressed_" + file.name.replace(/\.[^/.]+$/, "") + ".jpg";
-                }
+                const imgData = await App.compressImageToJSON('prod-img');
 
                 const data = {
                     id: document.getElementById('prod-id').value,
@@ -976,7 +969,9 @@
                     capital: parseInt(document.getElementById('prod-cogs').value),
                     stock: parseInt(document.getElementById('prod-stock').value),
                     sold: parseInt(document.getElementById('prod-sold').value),
-                    imageBase64: base64, imageMime: mimeType, imageName: filename
+                    imageBase64: imgData ? imgData.base64 : null, 
+                    imageMime: imgData ? imgData.mime : null, 
+                    imageName: imgData ? imgData.name : null
                 };
 
                 const res = await App.apiCall({ action: "saveProduct", data: data });
@@ -1030,7 +1025,6 @@
                 document.getElementById('ord-total').innerText = App.formatRp(o.Total);
                 document.getElementById('ord-status').innerText = o.Status;
 
-                // TAMPILKAN BUKTI PEMBAYARAN (JIKA ADA)
                 const imgEl = document.getElementById('ord-receipt-img');
                 const noneEl = document.getElementById('ord-receipt-none');
                 
@@ -1068,31 +1062,12 @@
                 }
             },
 
-            renderFinance() {
-                const success = App.state.orders.filter(o => o.Status && o.Status.includes('SUCCESS'));
-                
-                const gross = success.reduce((sum, o) => sum + (Number(o.Total) || 0), 0);
-                let cogs = 0;
-
-                success.forEach(o => {
-                    try {
-                        const items = JSON.parse(o.Items_Detail);
-                        items.forEach(i => {
-                            const prod = App.state.products.find(p => p.ID_Product === i.id);
-                            if (prod) cogs += (Number(prod.Capital_Price) || 0) * i.qty;
-                        });
-                    } catch(e) {}
-                });
-
-                const net = gross - cogs;
-
-                document.getElementById('fin-gross').innerText = App.formatRp(gross);
-                document.getElementById('fin-cogs').innerText = App.formatRp(cogs);
-                document.getElementById('fin-net').innerText = App.formatRp(net);
-            },
-
+            // --- UPGRADED: TAMPILAN SETTINGS DENGAN LOGO ---
             renderSettings() {
                 const s = App.state.settings;
+                const arr = ['qris', 'bca', 'bni', 'dana', 'ovo', 'gopay', 'shopeepay'];
+                
+                // Set Text Inputs
                 document.getElementById('set-qris').value = s.QRIS_LINK || '';
                 document.getElementById('set-bca').value = s.BCA || '';
                 document.getElementById('set-bni').value = s.BNI || '';
@@ -1100,10 +1075,34 @@
                 document.getElementById('set-ovo').value = s.EWALLET_OVO || '';
                 document.getElementById('set-gopay').value = s.EWALLET_GOPAY || '';
                 document.getElementById('set-shopeepay').value = s.EWALLET_SHOPEEPAY || '';
+
+                // Tampilkan Image Preview Jika Ada
+                arr.forEach(key => {
+                    const dbKey = 'LOGO_' + key.toUpperCase();
+                    const imgEl = document.getElementById('preview-' + key);
+                    document.getElementById('logo-' + key).value = ''; // reset file input
+
+                    if(s[dbKey] && s[dbKey].startsWith('http')) {
+                        imgEl.src = s[dbKey];
+                        imgEl.classList.remove('hidden');
+                    } else {
+                        imgEl.classList.add('hidden');
+                    }
+                });
             },
 
             async saveSettings() {
                 App.showLoader(true);
+                
+                // Ambil & Proses Image Inputs Menjadi Base64
+                const logoQris = await App.compressImageToJSON('logo-qris');
+                const logoBca = await App.compressImageToJSON('logo-bca');
+                const logoBni = await App.compressImageToJSON('logo-bni');
+                const logoDana = await App.compressImageToJSON('logo-dana');
+                const logoOvo = await App.compressImageToJSON('logo-ovo');
+                const logoGopay = await App.compressImageToJSON('logo-gopay');
+                const logoShopee = await App.compressImageToJSON('logo-shopeepay');
+
                 const data = {
                     qris: document.getElementById('set-qris').value,
                     bca: document.getElementById('set-bca').value,
@@ -1111,15 +1110,26 @@
                     dana: document.getElementById('set-dana').value,
                     ovo: document.getElementById('set-ovo').value,
                     gopay: document.getElementById('set-gopay').value,
-                    shopeepay: document.getElementById('set-shopeepay').value
+                    shopeepay: document.getElementById('set-shopeepay').value,
+                    
+                    // Bundle image data 
+                    imgQris: logoQris,
+                    imgBca: logoBca,
+                    imgBni: logoBni,
+                    imgDana: logoDana,
+                    imgOvo: logoOvo,
+                    imgGopay: logoGopay,
+                    imgShopee: logoShopee
                 };
 
                 const res = await App.apiCall({ action: "updateSettings", data: data });
                 
-                App.showLoader(false);
                 if(res) {
-                    App.state.settings = { ...App.state.settings, QRIS_LINK: data.qris, BCA: data.bca, BNI: data.bni, EWALLET_DANA: data.dana, EWALLET_OVO: data.ovo, EWALLET_GOPAY: data.gopay, EWALLET_SHOPEEPAY: data.shopeepay };
-                    App.showToast("Pengaturan E-Wallet & Bank Disimpan!");
+                    // Update cache state setelah load berhasil
+                    await App.fetchData(); // Fetch the latest data to re-render logos properly
+                    App.showToast("Pengaturan E-Wallet, Bank, dan Logo Berhasil Disimpan!");
+                } else {
+                    App.showLoader(false);
                 }
             },
 
